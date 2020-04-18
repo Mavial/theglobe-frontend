@@ -1,0 +1,100 @@
+@media (max-width: 859.98px) {
+  .sm-feed {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 60vh;
+    background-color: white;
+  }
+  .isShow {
+    animation-duration: 2s;
+    animation-name: show;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  .isnotShow {
+    animation-duration: 2s;
+    animation-name: hide;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes show {
+    0%    {bottom: -60vh;}
+    100%  {bottom: 0;}
+  }
+  @keyframes hide {
+    0%    {bottom: 0;}
+    100%  {bottom: -60vh;}
+  }
+}
+@media (min-width: 860px) {
+  .feed {
+    position: absolute;
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    left: 15%;
+    width:70%;
+    height: 60vh;
+    background-color: white;
+  }
+  .isShow {
+    animation-duration: 2s;
+    animation-name: show;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  .isnotShow {
+    animation-duration: 2s;
+    animation-name: hide;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes show {
+    0%    {bottom: -60vh;}
+    100%  {bottom: 2%;}
+  }
+  @keyframes hide {
+    0%    {bottom: 2%;}
+    100%  {bottom: -60vh;}
+  }
+}
+
+.col,
+.col-6 {
+    color: rgb(0, 0, 0);
+    text-align: center;
+    /* border: 2px solid #fff; */
+}
+
+.col-12 {
+  padding: 1rem;
+  background-color: rgb(214, 214, 214);
+  text-align: center;
+  margin-bottom: 1rem;
+  height: 10vh;
+}
+
+.article-container {
+
+  padding: 2rem;
+  /* padding-left: 5rem;
+  padding-right: 5rem; */
+
+}
+
+.feed-button {
+  width: 100%;
+  height: 5.5vh;
+  color: rgb(22, 22, 22);
+}
+
+.feed-button-hover {
+  background-color: rgb(214, 214, 214) !important;
+}
