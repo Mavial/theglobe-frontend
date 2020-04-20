@@ -1,0 +1,23 @@
+.country-sign-container {
+    position: absolute;
+    top: 0;
+    width: 70%;
+    background-color: rgba(255, 255, 255, 0);
+    color: rgb(255, 255, 255);
+    padding: 1rem;
+
+}
+
+.country-sign-col {
+    background-color: white;
+    color: black;
+    width: 10px;
+}
+
+.block {
+    display: block;
+}
+
+.none {
+    display: none;
+}
