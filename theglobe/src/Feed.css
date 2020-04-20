@@ -43,14 +43,14 @@
     background-color: white;
   }
   .isShow {
-    animation-duration: 2s;
+    animation-duration: 1.5s;
     animation-name: show;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;
   }
 
   .isnotShow {
-    animation-duration: 2s;
+    animation-duration: 1.5s;
     animation-name: hide;
     animation-timing-function: ease-out;
     animation-fill-mode: forwards;

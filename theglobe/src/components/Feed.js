@@ -84,7 +84,7 @@ const Feed = ({country, showFeed}) => {
                 </MDBCol>
             </MDBRow>
 
-            <MDBRow className="overflow-auto article-container" style={{height: 'calc(54.5vh)'}}>
+            <MDBRow className="overflow-auto article-container" style={{height: 'calc(54vh + 1px)'}}>
                 <MDBCol size='12'>
                         Articles
                 </MDBCol>
