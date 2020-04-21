@@ -10,7 +10,7 @@ import specularImage from '../assets/globe/wateretopo.png';
 import geoJson from '../datasets/countries.geojson';
 import countriesLocationJson from '../datasets/countries_location.json';
 
-const World = ({setShowFeed, setCountry}) => {
+const World = ({setShowFeed, setCountry, width, height}) => {
   const globeEl = useRef();
   const [countries, setCountries] = useState({ features: []});
   const [countriesLocation, setCountriesLocation] = useState()
@@ -46,26 +46,23 @@ const World = ({setShowFeed, setCountry}) => {
     // controls.dynamicDampingFactor = 0.3
     // controls.rotateSpeed=0.5;
   }, []);
+
   useEffect(() => {
-    window.addEventListener('resize', onWindowResize, false)
-    function onWindowResize(){
-      setTimeout(() => {
-        var dpr = window.devicePixelRatio !== undefined ? window.devicePixelRatio : 1;
+    var renderer = globeEl.current.renderer();
+    // var camera = globeEl.current.camera();
 
-        var w =  window.innerWidth;
-        var h = window.innerHeight;
+    // var w = width;
+    // var h = height;
+    var dpr = window.devicePixelRatio !== undefined ? window.devicePixelRatio : 1;
 
-        var renderer = globeEl.current.renderer();
-        var camera = globeEl.current.camera();
-        // renderer.domElement.originalSize = { width: w, height: h};
-        camera.aspect = w / h;
-        camera.updateProjectionMatrix();
+    // camera.aspect = w / h;
+    // camera.updateProjectionMatrix();
 
-        renderer.setPixelRatio( dpr );
-        renderer.setSize( w, h );
-      });
-    }
-  }, []);
+    renderer.setPixelRatio( dpr );
+    // renderer.setSize( w, h );
+
+  }, [height, width])
+
   useEffect(() => {
     // custom globe material
     const globeMaterial = globeEl.current.globeMaterial();
@@ -161,8 +158,8 @@ const World = ({setShowFeed, setCountry}) => {
         polygonLabel={() => `
         <b>${selected ? selected.properties.name: ''}</b>
         `}
-        width={window.innerWidth}
-        height={window.innerHeight}
+        width={width}
+        height={height}
       />
     </div>
     </>
