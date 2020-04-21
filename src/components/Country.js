@@ -3,7 +3,6 @@ import '../Country.css';
 
 const Country = ({country, showFeed}) => {
 
-
     return(
         <div className={`
             d-flex justify-content-center border border-top-0 border-dark

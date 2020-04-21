@@ -23,12 +23,12 @@
   }
 
   @keyframes show {
-    0%    {bottom: -60vh;}
+    0%    {bottom: -60vh; display: block;}
     100%  {bottom: 0;}
   }
   @keyframes hide {
     0%    {bottom: 0;}
-    100%  {bottom: -60vh;}
+    100%  {bottom: -60vh; display: none;}
   }
 }
 @media (min-width: 860px) {
@@ -73,25 +73,22 @@
     /* border: 2px solid #fff; */
 }
 
-.col-12 {
-  padding: 1rem;
-  background-color: rgb(214, 214, 214);
-  text-align: center;
-  margin-bottom: 1rem;
-  height: 10vh;
+.article-outer-container {
+  padding: 4% 10%;
+  height: calc(100% - 2.5rem);
+}
+.article-inner-container {
+  width: 100%;
+  max-width: 1000px;
 }
 
-.article-container {
-
-  padding: 2rem;
-  /* padding-left: 5rem;
-  padding-right: 5rem; */
-
+.button-container {
+  height: 2.5rem;
 }
 
 .feed-button {
-  width: 100%;
-  height: 5.5vh;
+  width: 50%;
+  height: 2.5rem;
   color: rgb(22, 22, 22);
 }
 
