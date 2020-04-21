@@ -1,0 +1,246 @@
+.col-12 {
+
+}
+
+.col-6 {
+
+}
+
+.col-4 {
+
+}
+
+.article {
+  background-color: rgb(255, 255, 255);
+  margin-bottom: 1rem;
+}
+
+
+.headline {
+    text-align: left;
+}
+
+.description {
+    text-align: left;
+}
+
+.hide-expand button{
+    display:none;
+}
+
+
+@media (max-width: 399.98px) {
+    .article {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid rgb(180, 180, 180);
+    }
+    .aspect-ratio-picture {
+        height: 0;
+        overflow: hidden;
+        padding-top: 100%;
+        background: white;
+        position: relative;
+    }
+    .aspect-ratio-picture-inside {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .aspect-ratio-content {
+        height: 0;
+        overflow: hidden;
+        padding-top: calc(4 / 7 * 100%);
+        background: white;
+        position: relative;
+    }
+    .aspect-ratio-content-inside {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+    }
+    .headline {
+        font-size: 12px;
+        text-align: left;
+        height: 70%;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+    .description {
+        display: none;
+        margin: 0;
+    }
+    .publisher {
+        position: absolute;
+        bottom: 4px;
+        font-size: 9px;
+        height: 13.5px;
+        width: auto;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+}
+
+@media (min-width: 400px) and (max-width: 575.98px) {
+    .article {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid rgb(180, 180, 180);
+    }
+    .aspect-ratio-picture {
+        height: 0;
+        overflow: hidden;
+        padding-top: 100%;
+        background: white;
+        position: relative;
+    }
+    .aspect-ratio-picture-inside {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .aspect-ratio-content {
+        height: 0;
+        overflow: hidden;
+        padding-top: calc(4 / 7 * 100%);
+        background: white;
+        position: relative;
+    }
+    .aspect-ratio-content-inside {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 100%;
+    }
+    .headline {
+        font-size: 13px;
+        text-align: left;
+        height: 60px;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+    .description {
+        display: block;
+        font-size: 12px;
+        text-align: left;
+        height: auto;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+    .publisher {
+        position: absolute;
+        bottom: 4px;
+        font-size: 10px;
+        height: 15px;
+        border: 1px solid green;
+        width: auto;
+        padding-left: 5px;
+        padding-top: 0;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 859.98px) {
+
+    .article {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid rgb(180, 180, 180);
+    }
+    .aspect-ratio-picture {
+
+    }
+    .aspect-ratio-picture-inside {
+        top: 0;
+        left: 0;
+        width: 150px;
+        height: 150px;
+        overflow: hidden;
+    }
+    .aspect-ratio-content {
+    }
+    .aspect-ratio-content-inside {
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 150px;
+        overflow: hidden;
+    }
+    .headline {
+        font-size: 15px;
+        text-align: left;
+        max-height: 50%;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+    .description {
+        display: block;
+        font-size: 15px;
+        text-align: left;
+        height: auto;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+    .publisher {
+        position: absolute;
+        bottom: 10px;
+        font-size: 13px;
+        height: 19.5px;
+        width: auto;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+}
+
+
+@media (min-width: 860px) {
+
+    .article {
+        padding: 1.5rem 0;
+        border-bottom: 1px solid rgb(180, 180, 180);
+    }
+    .aspect-ratio-picture {
+
+    }
+    .aspect-ratio-picture-inside {
+        top: 0;
+        left: 0;
+        width: 180px;
+        height: 180px;
+        overflow: hidden;
+    }
+    .aspect-ratio-content {
+    }
+    .aspect-ratio-content-inside {
+        top: 0;
+        left: 0;
+        height: 180px;
+        overflow: hidden;
+    }
+    .headline {
+        font-size: 15px;
+        text-align: left;
+        max-height: 50%;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+    .description {
+        display: block;
+        font-size: 15px;
+        text-align: left;
+        height: auto;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+    .publisher {
+        position: absolute;
+        bottom: 11px;
+        font-size: 13px;
+        height: 19.5px;
+        width: auto;
+        padding-left: 5px;
+        padding-top: 2px;
+    }
+
+}
