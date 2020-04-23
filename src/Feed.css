@@ -8,27 +8,19 @@
     height: 60vh;
     background-color: white;
   }
-  .isShow {
-    animation-duration: 2s;
-    animation-name: show;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
+  .hide {
+    transition-duration: 2s, 0s;
+    transition-property: transform, visibility;
+    transition-delay: 0s, 2s;
+    transform: translateY(100%);
+    visibility: hidden;
   }
-
-  .isnotShow {
-    animation-duration: 2s;
-    animation-name: hide;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes show {
-    0%    {bottom: -60vh; display: block;}
-    100%  {bottom: 0;}
-  }
-  @keyframes hide {
-    0%    {bottom: 0;}
-    100%  {bottom: -60vh; display: none;}
+  .show {
+    transition-duration: 2s, 0s;
+    transition-property: transform, visibility;
+    transition-delay: 0s, 0s;
+    transform: translateY(0);
+    visibility: visible;
   }
 }
 @media (min-width: 860px) {
@@ -42,28 +34,22 @@
     height: 60vh;
     background-color: white;
   }
-  .isShow {
-    animation-duration: 1.5s;
-    animation-name: show;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
+  .hide {
+    transition-duration: 2s, 0s;
+    transition-property: transform, visibility;
+    transition-delay: 0s, 2s;
+    transform: translateY(100%);
+    visibility: hidden;
+  }
+  .show {
+    transition-duration: 2s, 0s;
+    transition-property: transform, visibility;
+    transition-delay: 0s, 0s;
+    transform: translateY(0);
+    visibility: visible;
+    bottom: 2%;
   }
 
-  .isnotShow {
-    animation-duration: 1.5s;
-    animation-name: hide;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes show {
-    0%    {bottom: -60vh;}
-    100%  {bottom: 2%;}
-  }
-  @keyframes hide {
-    0%    {bottom: 2%;}
-    100%  {bottom: -60vh;}
-  }
 }
 
 .col,
@@ -86,6 +72,10 @@
   height: 2.5rem;
 }
 
+.button-container button:focus{
+  outline: none;
+}
+
 .feed-button {
   width: 50%;
   height: 2.5rem;
@@ -93,5 +83,5 @@
 }
 
 .feed-button-hover {
-  background-color: rgb(214, 214, 214) !important;
+  background-color: rgb(167, 167, 167) !important;
 }

@@ -24,7 +24,7 @@ const Feed = ({country, showFeed}) => {
             style={{border: '1px solid black'}}
             className={`
                 sm-feed feed rounded mb-0
-                ${showFeed ? 'isShow' : 'isnotShow'}
+                ${showFeed ? 'show' : 'hide'}
             `}
         >
             {/* <MDBRow>

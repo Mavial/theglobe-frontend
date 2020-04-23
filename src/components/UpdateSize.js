@@ -19,7 +19,7 @@ const UpdateSize = ({setHeight, setWidth}) => {
         timeoutId = setTimeout(() => {
           setHeight(getHeight());
           setWidth(getWidth())
-        });
+        }, 10);
       };
       // set resize listener
       window.addEventListener('resize', onWindowResize);
