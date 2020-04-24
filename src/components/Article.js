@@ -5,7 +5,23 @@ import testPicture from '../assets/test-picture.jpg';
 
 import '../Article.css';
 
+import { request } from 'graphql-request';
+
 const Article = ({country}) => {
+
+    const query = `{
+        allArticles(section: "`+ country + `") {
+            edges {
+                node {
+                    name
+                    title
+                    section
+                }
+            }
+        }
+    }`;
+
+    var response = request('http://127.0.0.1:8000/articles/', query).then(data => console.log(data));
 
     return(
 
@@ -30,9 +46,10 @@ const Article = ({country}) => {
                         </div>
                         <div className="description">
                         <ClampLines
-                            text={'Spaced out evenly across an open space in the heart of Tel Aviv, Israelis protested on Sunday against Prime Minister Benjamin Netanyahu&#39;s policies. '}
+                            text={'response'}
                             id="really-unique-id2"
-                            lines={window.innerWidth >= 860 ? 3 : 1}
+                            //lines={window.innerWidth >= 860 ? 1 : 3}
+                            lines= {8}
                             ellipsis="..."
                             className="hide-expand"
                             innerElement="p"
