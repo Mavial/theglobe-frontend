@@ -5,23 +5,7 @@ import testPicture from '../assets/test-picture.jpg';
 
 import '../Article.css';
 
-import { request } from 'graphql-request';
-
 const Article = ({country}) => {
-
-    const query = `{
-        allArticles(section: "`+ country + `") {
-            edges {
-                node {
-                    name
-                    title
-                    section
-                }
-            }
-        }
-    }`;
-
-    var response = request('http://127.0.0.1:8000/articles/', query).then(data => console.log(data));
 
     return(
 
