@@ -63,12 +63,20 @@ const Feed = ({country, showFeed}) => {
                 </button>
             </div>
             <div className="overflow-auto article-outer-container d-flex justify-content-center">
-                <div className="article-inner-container">
-                    <Article country={country}/>
-                    <Article country={country}/>
-                    <Article country={country}/>
-                    <Article country={country}/>
-                </div>
+                {/* Get articles with API */}
+                {btn1clicked ?
+                    <div className="article-inner-container">
+                        <Article country={country}/>
+                        <Article country={country}/>
+                        <Article country={country}/>
+                        <Article country={country}/>
+                    </div>
+                : btn2clicked ?
+                    <div className="article-inner-container">
+                        <Article country={country}/>
+                        <Article country={country}/>
+                    </div>
+                : ''}
             </div>
 
         </div>
