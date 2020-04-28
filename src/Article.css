@@ -1,27 +1,17 @@
-.col-12 {
-
-}
-
-.col-6 {
-
-}
-
-.col-4 {
-
-}
-
 .article {
   background-color: rgb(255, 255, 255);
   margin-bottom: 1rem;
 }
 
-
 .headline {
     text-align: left;
+    overflow: hidden;
 }
 
 .description {
     text-align: left;
+    overflow: hidden;
+
 }
 
 .hide-expand button{
@@ -64,7 +54,8 @@
     .headline {
         font-size: 12px;
         text-align: left;
-        height: 70%;
+        min-height: 18px;
+        max-height: 54px;
         padding-left: 5px;
         padding-top: 2px;
     }
@@ -118,7 +109,8 @@
     .headline {
         font-size: 13px;
         text-align: left;
-        height: 60px;
+        min-height: 19.5px;
+        max-height: 58.5px;
         padding-left: 5px;
         padding-top: 2px;
     }
@@ -126,7 +118,7 @@
         display: block;
         font-size: 12px;
         text-align: left;
-        height: auto;
+        height: 18px;
         padding-left: 5px;
         padding-top: 2px;
     }
@@ -135,7 +127,6 @@
         bottom: 4px;
         font-size: 10px;
         height: 15px;
-        border: 1px solid green;
         width: auto;
         padding-left: 5px;
         padding-top: 0;
@@ -148,9 +139,7 @@
         padding: 1.5rem 0;
         border-bottom: 1px solid rgb(180, 180, 180);
     }
-    .aspect-ratio-picture {
 
-    }
     .aspect-ratio-picture-inside {
         top: 0;
         left: 0;
@@ -170,7 +159,8 @@
     .headline {
         font-size: 15px;
         text-align: left;
-        max-height: 50%;
+        min-height: 22.5px;
+        max-height: 67.5px;
         padding-left: 5px;
         padding-top: 2px;
     }
@@ -178,7 +168,7 @@
         display: block;
         font-size: 15px;
         text-align: left;
-        height: auto;
+        height: 22.5px;
         padding-left: 5px;
         padding-top: 2px;
     }
@@ -221,7 +211,8 @@
     .headline {
         font-size: 15px;
         text-align: left;
-        max-height: 50%;
+        min-height: 22.5px;
+        max-height: 67.5px;
         padding-left: 5px;
         padding-top: 2px;
     }
@@ -229,7 +220,8 @@
         display: block;
         font-size: 15px;
         text-align: left;
-        height: auto;
+        min-height: 22.5px;
+        max-height: 67.5px;
         padding-left: 5px;
         padding-top: 2px;
     }

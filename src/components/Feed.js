@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../Feed.css';
 import Article from './Article';
+import Country from './Country'
 
 const Feed = ({country, showFeed}) => {
 
@@ -20,6 +21,7 @@ const Feed = ({country, showFeed}) => {
 
     return(
         <>
+        <div className="d-flex justify-content-center">
         <div
             style={{border: '1px solid black'}}
             className={`
@@ -27,13 +29,7 @@ const Feed = ({country, showFeed}) => {
                 ${showFeed ? 'show' : 'hide'}
             `}
         >
-            {/* <MDBRow>
-                <MDBCol size='12'>
-                    <h1 className="font-weight-bold">
-                        {country ? country.properties.name : ''}
-                    </h1>
-                </MDBCol>
-            </MDBRow> */}
+            <Country country={country} showFeed={showFeed}/>
             <div className="button-container">
                 <button
                     onMouseEnter={() => setBtn1Hover(true)}
@@ -41,7 +37,7 @@ const Feed = ({country, showFeed}) => {
                     onClick={() => clicked1()}
                     style={{backgroundColor: `${btn1clicked ? 'rgb(167, 167, 167)' : 'white'}`}}
                     className={`
-                        border border-top-0 border-left-0 border-dark feed-button rounded-left
+                        border border-left-0 border-dark feed-button
                         ${btn1hover ? 'feed-button-hover' : 'feed-button-nohover'}
                         ${btn1clicked ? 'border-right' : 'border-right-0'}
                     `}
@@ -54,7 +50,7 @@ const Feed = ({country, showFeed}) => {
                     onClick={() => clicked2()}
                     style={{backgroundColor: `${btn2clicked ? 'rgb(167, 167, 167)' : 'white'}`}}
                     className={`
-                        border border-top-0 border-right-0 border-dark feed-button rounded-right
+                        border border-right-0 border-dark feed-button
                         ${btn2hover ? 'feed-button-hover' : 'feed-button-nohover'}
                         ${btn2clicked ? 'border-left' : 'border-left-0'}
                     `}
@@ -78,7 +74,7 @@ const Feed = ({country, showFeed}) => {
                     </div>
                 : ''}
             </div>
-
+        </div>
         </div>
         </>
     )

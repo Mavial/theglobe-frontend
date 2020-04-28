@@ -5,11 +5,15 @@ const Country = ({country, showFeed}) => {
 
     return(
         <div className={`
-            d-flex justify-content-center border border-top-0 border-dark
-            ${showFeed ? 'block' : 'none'}
+            d-flex justify-content-center
             `}>
-            <div className="text-center country-sign-container">
-                <h2>{country ? country.properties.name : ''}</h2>
+            <div className={`
+            text-center
+            country-sign-container
+            border-bottom border-dark
+            ${showFeed ? 'country-show' : 'country-hide'}
+            `}>
+                <p>{country ? country.properties.name : ''}</p>
             </div>
         </div>
     )

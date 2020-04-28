@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import World from './components/Globe';
 import Feed from './components/Feed';
-import Country from './components/Country'
 import UpdateSize from './components/UpdateSize'
 
 const App = () => {
@@ -16,16 +15,14 @@ const App = () => {
         <World
           setShowFeed={setShowFeed}
           setCountry={setCountry}
+          country={country}
           height={height}
           width={width}
         />
         <Feed
           country={country}
           showFeed={showFeed}
-          height={height}
-          width={width}
         />
-        <Country country={country} showFeed={showFeed}/>
         <UpdateSize setHeight={setHeight} setWidth={setWidth}/>
     </>
   );

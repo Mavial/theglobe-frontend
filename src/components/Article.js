@@ -30,7 +30,7 @@ const Article = ({country}) => {
                         </div>
                         <div className="description">
                         <ClampLines
-                            text={'Spaced out evenly across an open space in the heart of Tel Aviv, Israelis protested on Sunday against Prime Minister Benjamin Netanyahu&#39;s policies. '}
+                            text={'Spaced out evenly across an open space in the heart of Tel Aviv, Israelis protested on Sunday against Prime Minister Benjamin Netanyahu&#39;s policies.'}
                             id="really-unique-id2"
                             lines={window.innerWidth >= 860 ? 3 : 1}
                             ellipsis="..."

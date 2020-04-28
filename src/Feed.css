@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 60vh;
+    height: 62vh;
     background-color: white;
   }
   .hide {
@@ -26,12 +26,13 @@
 @media (min-width: 860px) {
   .feed {
     position: absolute;
+    overflow: hidden;
     bottom: 0;
     margin: 0;
     padding: 0;
-    left: 25%;
-    width:50%;
-    height: 60vh;
+    width:70%;
+    max-width: 900px;
+    height: 62vh;
     background-color: white;
   }
   .hide {
@@ -60,8 +61,10 @@
 }
 
 .article-outer-container {
-  padding: 4% 10%;
-  height: calc(100% - 2.5rem);
+  position: relative;
+  top: 54px;
+  padding: 0 10%;
+  height: calc(100% - 2.5rem - 54px);
 }
 .article-inner-container {
   width: 100%;
@@ -69,7 +72,11 @@
 }
 
 .button-container {
+  position: absolute;
+  overflow:hidden;
+  bottom: 0;
   height: 2.5rem;
+  width: 100%;
 }
 
 .button-container button:focus{
