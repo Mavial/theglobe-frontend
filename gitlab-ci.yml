@@ -1,0 +1,12 @@
+image: docker:19.03.8
+
+before_script:
+    - docker login -u $LR_REGISTRY_USER -p $LR_REGISTRY_PASSWORD $LR_REGISTRY
+
+build:
+  stage: build
+  script:
+    - docker build -t $LR_REGISTRY$LR_REGISTRY_IMAGE:latest .
+    - docker push $LR_REGISTRY$LR_REGISTRY_IMAGE:latest
+  only:
+    - master
