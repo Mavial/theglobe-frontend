@@ -1,14 +1,15 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
-import * as THREE from 'three';
+import { TextureLoader, Color } from 'three';
 import Globe from 'react-globe.gl';
 import TWEEN from '@tweenjs/tween.js';
 
-import globeImage from '../assets/globe/11433.jpg';
-import bumpImage from '../assets/globe/elev_bump_4k_enh.jpg'; // '//unpkg.com/three-globe/example/img/earth-topology.png'
-import backgroundImage from '../assets/globe/starfield.png';
-import specularImage from '../assets/globe/wateretopo.png';
 import geoJson from '../datasets/countries.geojson';
 import countriesLocationJson from '../datasets/countries_location.json';
+
+import globeImage from '../assets/globe/texture_1k.jpg';
+import bumpImage from '../assets/globe/bumpMap_1k.jpg'; // '//unpkg.com/three-globe/example/img/earth-topology.png'
+import backgroundImage from '../assets/globe/starfield_4k.png';
+import specularImage from '../assets/globe/specularMap_1k.jpg';
 
 
 
@@ -74,21 +75,24 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
     // custom globe material
     const globeMaterial = globeEl.current.globeMaterial();
     globeMaterial.bumpScale = 10;
-    new THREE.TextureLoader().load(specularImage, texture => {
+    new TextureLoader().load(specularImage, texture => {
       globeMaterial.specularMap = texture;
-      globeMaterial.specular = new THREE.Color('grey');
+      globeMaterial.specular = new Color('grey');
       globeMaterial.shininess = 15;
     });
   }, []);
 
   const autoRotateTimeout = () => {
+    console.log('autoRotate: timeout set')
     globeEl.current.controls().autoRotate = false;
     autoRotateTimeoutID = setTimeout(() => {
+      console.log('autoRotate: click=' + click + ' hover=' + hover)
       globeEl.current.controls().autoRotate = (click || hover) ? false : true;
     }, (autoRotateTimeoutNum * 1000))
   };
 
   const autoRotateDisable = () => {
+    console.log('autoRotate : disabled')
     clearTimeout(autoRotateTimeoutID)
     globeEl.current.controls().autoRotate = false
   };
