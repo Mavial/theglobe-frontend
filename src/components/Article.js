@@ -5,7 +5,7 @@ import testPicture from '../assets/test-picture.jpg';
 
 import '../Article.css';
 
-const Article = ({country}) => {
+const Article = ({item}) => {
 
     return(
 
@@ -20,7 +20,7 @@ const Article = ({country}) => {
                     <div className="aspect-ratio-content-inside">
                         <div className="headline  font-weight-bolder">
                         <ClampLines
-                            text={'Thousands of Israelis protest against Netanyahu, two meters apart'}
+                            text={item.title}
                             id="really-unique-id"
                             lines={3}
                             ellipsis="..."
@@ -30,7 +30,7 @@ const Article = ({country}) => {
                         </div>
                         <div className="description">
                         <ClampLines
-                            text={'Spaced out evenly across an open space in the heart of Tel Aviv, Israelis protested on Sunday against Prime Minister Benjamin Netanyahu&#39;s policies.'}
+                            text={item.description}
                             id="really-unique-id2"
                             lines={window.innerWidth >= 860 ? 3 : 1}
                             ellipsis="..."
@@ -39,7 +39,7 @@ const Article = ({country}) => {
                         />
                         </div>
                         <div className="publisher ">
-                            <p>cnn.com</p>
+                            <p>{item.publisher}</p>
                         </div>
                         {/* <MDBRow className="border border-dark">
                             <MDBCol size="4" className="border border-dark publisher">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import '../Feed.css';
 import Article from './Article';
 import Country from './Country'
@@ -10,6 +10,8 @@ const Feed = ({country, showFeed}) => {
     const [btn1hover, setBtn1Hover] = useState(false)
     const [btn2hover, setBtn2Hover] = useState(false)
 
+    const articleContainerRef = useRef(null)
+
     const clicked1 = () => {
         setBtn1Clicked(true)
         setBtn2Clicked(false)
@@ -18,6 +20,41 @@ const Feed = ({country, showFeed}) => {
         setBtn2Clicked(true)
         setBtn1Clicked(false)
     }
+
+    useEffect(() => {
+        articleContainerRef.current.scrollTop = 0;
+    }, [country, btn1clicked, btn2clicked])
+
+    // Test
+    const hotList = [
+        {
+            title: "This is a test title hello",
+            description: "This is a test description and has to be a bit longher the the actual title, because it is how it is.",
+            publisher: "heinz.de"
+        },
+        {
+            title: "This is a test ddddddddddddddddtitle hello",
+            description: "This is a test daaaadescription and has to be a bit longher the the actual title, because it is how it is.",
+            publisher: "heinz.de"
+        },
+        {
+            title: "This is a test titddddddddddddle hello",
+            description: "This is a test dddescription and has to be a bit longher the the actual title, because it is how it is.",
+            publisher: "heinz.de"
+        }
+    ];
+    const newList = [
+        {
+            title: "This is the aaaaaaaatest title for new news",
+            description: "This is a tesdddt description for new news and has to be a bit longher the the actual title, because it is how it is.",
+            publisher: "heinz.de"
+        },
+        {
+            title: "This is thedddddd test title for new news",
+            description: "This is a test descripthhhhhion for new news and has to be a bit longher the the actual title, because it is how it is.",
+            publisher: "heinz.de"
+        }
+    ];
 
     return(
         <>
@@ -58,21 +95,13 @@ const Feed = ({country, showFeed}) => {
                     NEW
                 </button>
             </div>
-            <div className="overflow-auto article-outer-container d-flex justify-content-center">
+            <div ref={articleContainerRef} className="overflow-auto article-outer-container d-flex justify-content-center">
                 {/* Get articles with API */}
-                {btn1clicked ?
-                    <div className="article-inner-container">
-                        <Article country={country}/>
-                        <Article country={country}/>
-                        <Article country={country}/>
-                        <Article country={country}/>
-                    </div>
-                : btn2clicked ?
-                    <div className="article-inner-container">
-                        <Article country={country}/>
-                        <Article country={country}/>
-                    </div>
-                : ''}
+                <div className="article-inner-container">
+                    {(btn1clicked ? hotList : newList).map((item, index) => (
+                        <Article key={index} item={item} />
+                    ))}
+                </div>
             </div>
         </div>
         </div>
