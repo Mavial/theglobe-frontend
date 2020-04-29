@@ -27,6 +27,7 @@ const App = () => {
         textColor='#f0f0f0'
         text='The Globe is ready soon'
       >
+        <div></div>
       </LoadingScreen>
       <World
         setShowFeed={setShowFeed}
