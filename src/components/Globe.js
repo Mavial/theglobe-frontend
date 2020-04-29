@@ -52,7 +52,6 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
     controls.minDistance = 150;
     // controls.dynamicDampingFactor = 0.3
     controls.autoRotateSpeed = 0.03;
-    autoRotateTimeout();
   }, []);
 
   useEffect(() => {
@@ -191,7 +190,6 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
     var z = Math.round( globeEl.current.camera().position.z * 1e3 ) / 1e3;
     setOnMouseDownPos({x: x, y: y, z: z})
   }
-
 
   return (
     <>
