@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import LoadingScreen from 'react-loading-screen'
+import React, { useState, lazy, Suspense } from 'react';
+import LoadingScreen from 'react-loading-screen';
 
+import UpdateSize from './components/UpdateSize';
 import World from './components/Globe';
-import Feed from './components/Feed';
-import UpdateSize from './components/UpdateSize'
+
+const Feed = lazy(() => import('./components/Feed'));
 
 const App = () => {
   const [showFeed, setShowFeed] = useState(false)
@@ -36,11 +37,13 @@ const App = () => {
         height={height}
         width={width}
       />
-      <Feed
-        country={country}
-        showFeed={showFeed}
-      />
       <UpdateSize setHeight={setHeight} setWidth={setWidth}/>
+      <Suspense fallback={null}>
+        <Feed
+          country={country}
+          showFeed={showFeed}
+        />
+      </Suspense>
     </>
   );
 };
