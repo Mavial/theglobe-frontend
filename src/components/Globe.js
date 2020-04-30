@@ -1,17 +1,13 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useMemo} from 'react';
 import { TextureLoader, Color } from 'three';
 import Globe from 'react-globe.gl';
 import TWEEN from '@tweenjs/tween.js';
-
-import geoJson from '../datasets/countries.geojson';
-import countriesLocationJson from '../datasets/countries_location.json';
+import geoJson from '../datasets/merged_countries_data.geojson';
 
 import globeImage from '../assets/globe/texture_1k.jpg';
 import bumpImage from '../assets/globe/bumpMap_1k.jpg'; // '//unpkg.com/three-globe/example/img/earth-topology.png'
 import backgroundImage from '../assets/globe/starfield_4k.png';
 import specularImage from '../assets/globe/specularMap_1k.jpg';
-
-
 
 const autoRotateTimeoutNum = 30; // in s
 const globeTranslateY = 230; // If the feed pops up how high the scene should be moved on the y-axis
@@ -36,11 +32,6 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
       .then(countries => {
         setCountries(countries);
       });
-  }, []);
-
-  useMemo(() => {
-    setCountriesLocation(countriesLocationJson)
-    console.log(countriesLocationJson)
   }, []);
 
   useEffect(() => {
@@ -125,8 +116,8 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
   };
 
   function getCountryLocation(name) {
-    const match = countriesLocation.find(element => element.name === name)
-    if (match) {return {lat: match.latitude, lng:  match.longitude}} else {return false}
+    const match = countries.features.find(element => element.properties.name === name)
+    if (match) {return {lat: match.properties.latitude, lng:  match.properties.longitude}} else {return false}
   };
 
   const onHover = country => {
@@ -197,26 +188,26 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
 
   return (
     <>
-    <div onClick={onClick} onMouseDown={onMouseDown}>
-      <Globe
-        ref={globeEl}
-        waitForGlobeReady={true}
-        globeImageUrl= {globeImage}
-        backgroundImageUrl={backgroundImage}
-        bumpImageUrl= {bumpImage}
-        polygonsData={countries.features}
-        polygonAltitude={d => (d === country && click) ? 0.8 : 0.06}
-        polygonCapColor={d => (d === hoveredCountry || (d === country && click)) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
-        polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
-        polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
-        onPolygonHover={d => onHover(d)}
-        polygonLabel={() => `
-        <b>${hoveredCountry ? hoveredCountry.properties.name: ''}</b>
-        `}
-        width={width}
-        height={height}
-      />
-    </div>
+      <div onClick={onClick} onMouseDown={onMouseDown}>
+        <Globe
+          ref={globeEl}
+          waitForGlobeReady={true}
+          globeImageUrl= {globeImage}
+          backgroundImageUrl={backgroundImage}
+          bumpImageUrl= {bumpImage}
+          polygonsData={countries.features}
+          polygonAltitude={d => (d === country && click) ? 0.8 : 0.06}
+          polygonCapColor={d => (d === hoveredCountry || (d === country && click)) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
+          polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
+          polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
+          onPolygonHover={d => onHover(d)}
+          polygonLabel={() => `
+          <b>${hoveredCountry ? hoveredCountry.properties.name: ''}</b>
+          `}
+          width={width}
+          height={height}
+        />
+      </div>
     </>
   );
 };
