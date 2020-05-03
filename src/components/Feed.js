@@ -2,11 +2,11 @@ import React, { useState, useRef, useEffect } from 'react';
 import '../Feed.css';
 import Article from './Article';
 import Country from './Country'
-import {fetchArticles, fetchTopics} from './BackendFetcher';
+// import {fetchArticles, fetchTopics} from './BackendFetcher';
 
 const Feed = ({ country, showFeed }) => {
 
-    fetchArticles(country);
+    // fetchArticles(country);
 
     const [btn1clicked, setBtn1Clicked] = useState(true)
     const [btn2clicked, setBtn2Clicked] = useState(false)
@@ -60,15 +60,11 @@ const Feed = ({ country, showFeed }) => {
     ];
 
     return(
-    return (
         <>
         <div className="d-flex justify-content-center">
         <div
             style={{border: '1px solid black'}}
             className={`
-            <div
-                style={{ border: '1px solid black' }}
-                className={`
                 sm-feed feed rounded mb-0
                 ${showFeed ? 'show' : 'hide'}
             `}
@@ -82,27 +78,11 @@ const Feed = ({ country, showFeed }) => {
                     style={{backgroundColor: `${btn1clicked ? 'rgb(167, 167, 167)' : 'white'}`}}
                     className={`
                         border border-left-0 border-dark feed-button
-            >
-                {/* <MDBRow>
-                <MDBCol size='12'>
-                    <h1 className="font-weight-bold">
-                        {country ? country.properties.name : ''}
-                    </h1>
-                </MDBCol>
-            </MDBRow> */}
-                <div className="button-container">
-                    <button
-                        onMouseEnter={() => setBtn1Hover(true)}
-                        onMouseLeave={() => setBtn1Hover(false)}
-                        onClick={() => clicked1()}
-                        style={{ backgroundColor: `${btn1clicked ? 'rgb(167, 167, 167)' : 'white'}` }}
-                        className={`
-                        border border-top-0 border-left-0 border-dark feed-button rounded-left
                         ${btn1hover ? 'feed-button-hover' : 'feed-button-nohover'}
                         ${btn1clicked ? 'border-right' : 'border-right-0'}
                     `}
-                    >
-                        HOT
+                >
+                    HOT
                 </button>
                 <button
                     onMouseEnter={() => setBtn2Hover(true)}
@@ -111,18 +91,11 @@ const Feed = ({ country, showFeed }) => {
                     style={{backgroundColor: `${btn2clicked ? 'rgb(167, 167, 167)' : 'white'}`}}
                     className={`
                         border border-right-0 border-dark feed-button
-                    <button
-                        onMouseEnter={() => setBtn2Hover(true)}
-                        onMouseLeave={() => setBtn2Hover(false)}
-                        onClick={() => clicked2()}
-                        style={{ backgroundColor: `${btn2clicked ? 'rgb(167, 167, 167)' : 'white'}` }}
-                        className={`
-                        border border-top-0 border-right-0 border-dark feed-button rounded-right
                         ${btn2hover ? 'feed-button-hover' : 'feed-button-nohover'}
                         ${btn2clicked ? 'border-left' : 'border-left-0'}
                     `}
-                    >
-                        NEW
+                >
+                    NEW
                 </button>
             </div>
             <div ref={articleContainerRef} className="overflow-auto article-outer-container d-flex justify-content-center">
@@ -132,20 +105,10 @@ const Feed = ({ country, showFeed }) => {
                         <Article key={index} item={item} />
                     ))}
                 </div>
-                <div className="overflow-auto article-outer-container d-flex justify-content-center">
-                    <div className="article-inner-container">
-                        <Article country={country} />
-                        <Article country={country} />
-                        <Article country={country} />
-                        <Article country={country} />
-                    </div>
-                </div>
-
             </div>
         </div>
         </div>
         </>
     )
 };
-
 export default Feed;

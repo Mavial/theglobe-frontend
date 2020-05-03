@@ -3,6 +3,7 @@ import { TextureLoader, Color } from 'three';
 import Globe from 'react-globe.gl';
 import TWEEN from '@tweenjs/tween.js';
 import geoJson from '../datasets/merged_countries_data.geojson';
+import {fetchAllCountries} from './BackendFetcher'
 
 import globeImage from '../assets/globe/texture_1k.jpg';
 import bumpImage from '../assets/globe/bumpMap_1k.jpg'; // '//unpkg.com/three-globe/example/img/earth-topology.png'
@@ -20,19 +21,27 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
   const globeEl = useRef();
   const [countries, setCountries] = useState({ features: []});
   const [countriesLocation, setCountriesLocation] = useState()
+  const [fetchedData, setFetchedData] = useState('hi')
   const [hover, setHover] = useState(false)
   const [click, setClick] = useState(false)
   const [hoveredCountry, setHoveredCountry] = useState()
   const [onMouseDownCountry, setOnMouseDownCountry] = useState()
   const [onMouseDownPos, setOnMouseDownPos] = useState()
 
+  // console.log(fetchAllCountries());
+  useEffect(() => {
+    fetchAllCountries(setCountries);
+  }, [])
+
   useMemo(() => {
     // load polygon data
     fetch(geoJson).then(res => res.json())
       .then(countries => {
-        setCountries(countries);
+        countries.features.forEach(d => console.log(d))
       });
   }, []);
+
+
 
   useEffect(() => {
     // Get location by IP address from backend
