@@ -1,32 +1,49 @@
-import React, { useState } from 'react';
+import React, { useState, lazy, Suspense } from 'react';
+import LoadingScreen from 'react-loading-screen';
 
+import UpdateSize from './components/UpdateSize';
 import World from './components/Globe';
-import Feed from './components/Feed';
-import Country from './components/Country'
-import UpdateSize from './components/UpdateSize'
+
+const Feed = lazy(() => import('./components/Feed'));
 
 const App = () => {
   const [showFeed, setShowFeed] = useState(false)
   const [country, setCountry] = useState('')
   const [height, setHeight] = useState(window.innerHeight)
   const [width, setWidth] = useState(window.innerWidth)
+  const [loading, setLoading] = useState(true)
+
+  window.addEventListener('load', (event) => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  });
 
   return (
     <>
-        <World
-          setShowFeed={setShowFeed}
-          setCountry={setCountry}
-          height={height}
-          width={width}
-        />
+      <LoadingScreen
+        loading={loading}
+        bgColor='#000817'
+        spinnerColor='#9ee5f8'
+        textColor='#f0f0f0'
+        text='The Globe is ready soon'
+      >
+        <div></div>
+      </LoadingScreen>
+      <World
+        setShowFeed={setShowFeed}
+        setCountry={setCountry}
+        country={country}
+        height={height}
+        width={width}
+      />
+      <UpdateSize setHeight={setHeight} setWidth={setWidth}/>
+      <Suspense fallback={null}>
         <Feed
           country={country}
           showFeed={showFeed}
-          height={height}
-          width={width}
         />
-        <Country country={country} showFeed={showFeed}/>
-        <UpdateSize setHeight={setHeight} setWidth={setWidth}/>
+      </Suspense>
     </>
   );
 };

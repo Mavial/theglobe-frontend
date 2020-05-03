@@ -1,17 +1,10 @@
 .country-sign-container {
     position: absolute;
     top: 0;
-    width: 70%;
-    background-color: rgba(255, 255, 255, 0);
-    color: rgb(255, 255, 255);
-    padding: 1rem;
+    background-color: rgb(255, 255, 255);
+    color: rgb(0, 0, 0);
+    height: 54px;
+    font-size: 36px;
+    width: 100%;
 
-}
-
-.block {
-    display: block;
-}
-
-.none {
-    display: none;
 }

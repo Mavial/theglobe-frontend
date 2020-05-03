@@ -1,22 +1,30 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import * as THREE from 'three';
+import React, { useEffect, useRef, useState, useMemo} from 'react';
+import { TextureLoader, Color } from 'three';
 import Globe from 'react-globe.gl';
 import TWEEN from '@tweenjs/tween.js';
+import geoJson from '../datasets/merged_countries_data.geojson';
 
-import globeImage from '../assets/globe/11433.jpg';
-import bumpImage from '../assets/globe/elev_bump_4k_enh.jpg'; // '//unpkg.com/three-globe/example/img/earth-topology.png'
-import backgroundImage from '../assets/globe/starfield.png';
-import specularImage from '../assets/globe/wateretopo.png';
-import geoJson from '../datasets/countries.geojson';
-import countriesLocationJson from '../datasets/countries_location.json';
+import globeImage from '../assets/globe/texture_1k.jpg';
+import bumpImage from '../assets/globe/bumpMap_1k.jpg'; // '//unpkg.com/three-globe/example/img/earth-topology.png'
+import backgroundImage from '../assets/globe/starfield_4k.png';
+import specularImage from '../assets/globe/specularMap_1k.jpg';
 
-const World = ({setShowFeed, setCountry, width, height}) => {
+const autoRotateTimeoutNum = 30; // in s
+const globeTranslateY = 230; // If the feed pops up how high the scene should be moved on the y-axis
+const clickAccuracy = 0.8; // How accuarte clicks should be (to differenciate between globe interaction and clicking on a country.)
+
+var setCountryTimeoutID = null;
+var autoRotateTimeoutID = null;
+
+const World = ({setShowFeed, setCountry, country, width, height}) => {
   const globeEl = useRef();
   const [countries, setCountries] = useState({ features: []});
   const [countriesLocation, setCountriesLocation] = useState()
   const [hover, setHover] = useState(false)
   const [click, setClick] = useState(false)
-  const [selected, setSlected] = useState()
+  const [hoveredCountry, setHoveredCountry] = useState()
+  const [onMouseDownCountry, setOnMouseDownCountry] = useState()
+  const [onMouseDownPos, setOnMouseDownPos] = useState()
 
   useMemo(() => {
     // load polygon data
@@ -24,15 +32,6 @@ const World = ({setShowFeed, setCountry, width, height}) => {
       .then(countries => {
         setCountries(countries);
       });
-  }, []);
-
-  useMemo(() => {
-    setCountriesLocation(countriesLocationJson)
-    console.log(countriesLocationJson)
-  }, []);
-
-  useEffect(() => {
-    globeEl.current.controls().autoRotateSpeed = 0.03;
   }, []);
 
   useEffect(() => {
@@ -44,7 +43,7 @@ const World = ({setShowFeed, setCountry, width, height}) => {
     setTimeout(() => controls.maxDistance = 800);
     controls.minDistance = 150;
     // controls.dynamicDampingFactor = 0.3
-    // controls.rotateSpeed=0.5;
+    controls.autoRotateSpeed = 0.03;
   }, []);
 
   useEffect(() => {
@@ -67,26 +66,26 @@ const World = ({setShowFeed, setCountry, width, height}) => {
     // custom globe material
     const globeMaterial = globeEl.current.globeMaterial();
     globeMaterial.bumpScale = 10;
-    new THREE.TextureLoader().load(specularImage, texture => {
+    new TextureLoader().load(specularImage, texture => {
       globeMaterial.specularMap = texture;
-      globeMaterial.specular = new THREE.Color('grey');
+      globeMaterial.specular = new Color('grey');
       globeMaterial.shininess = 15;
     });
   }, []);
 
-  useEffect(() => {
-    globeEl.current.controls().autoRotate = (click || hover) ? false : true;
-    globeEl.current.controls().enabled = (click || hover) ? false : true;
-  }, [click, hover])
+  const autoRotateTimeout = () => {
+    console.log('autoRotate: timeout set')
+    globeEl.current.controls().autoRotate = false;
+    autoRotateTimeoutID = setTimeout(() => {
+      console.log('autoRotate: click=' + click + ' hover=' + hover)
+      globeEl.current.controls().autoRotate = (click || hover) ? false : true;
+    }, (autoRotateTimeoutNum * 1000))
+  };
 
-  const onHover = country => {
-    setSlected(country)
-    if (country) {
-      globeEl.current.controls().enabled = false;
-      setHover(true)
-    } else {
-      setHover(false)
-    }
+  const autoRotateDisable = () => {
+    console.log('autoRotate : disabled')
+    clearTimeout(autoRotateTimeoutID)
+    globeEl.current.controls().autoRotate = false
   };
 
   function translateGlobePos(obj) {
@@ -114,54 +113,101 @@ const World = ({setShowFeed, setCountry, width, height}) => {
         }
       }
     }
-    console.log(globeEl.current.scene().position)
   };
 
   function getCountryLocation(name) {
-    const match = countriesLocation.find(element => element.name === name)
-    if (match) {return {lat: match.latitude, lng:  match.longitude}} else {return false}
+    const match = countries.features.find(element => element.properties.name === name)
+    if (match) {return {lat: match.properties.latitude, lng:  match.properties.longitude}} else {return false}
   };
+
+  const onHover = country => {
+    setHoveredCountry(country);
+    if (country) {
+      autoRotateDisable();
+      console.log('hovered true');
+      setHover(true);
+    } else {
+      autoRotateTimeout();
+      console.log('hovered false');
+      setHover(false);
+    }
+  };
+
+  const roundPos = axis => {
+    return (Math.round(axis * 1e3) / 1e3);
+  }
+
+  const calcActualClick = (axis1, axis2) => {
+    return Math.abs(axis1 - axis2) < clickAccuracy
+  }
 
   // TODO Rotation to Country
   // TODO translateY with Tween for a smooth translation
   const onClick = () => {
-    if (selected){
-      setCountry(selected)
+    var actualClick = false;
+
+    var x2 = roundPos(globeEl.current.camera().position.x);
+    var y2 = roundPos(globeEl.current.camera().position.y);
+    var z2 = roundPos(globeEl.current.camera().position.z);
+    var x1 = onMouseDownPos.x;
+    var y1 = onMouseDownPos.y;
+    var z1 = onMouseDownPos.z;
+
+    actualClick = (calcActualClick(x1, x2) && calcActualClick(y1, y2) && calcActualClick(z1, z2) ? true : false);
+
+    console.log('Actual click is: ' + actualClick)
+
+    if (onMouseDownCountry && actualClick){
+      autoRotateDisable();
+      setCountry(onMouseDownCountry);
       setShowFeed(true);
-      setClick(true)
-      const countryLocation = getCountryLocation(selected.properties.name)
-      translateGlobePos(click ? countryLocation ? {positionOnly: true, lat: countryLocation.lat, lng: countryLocation.lng} : false : {from: {y: 0}, to: {y: 200}, lat: countryLocation.lat, lng: countryLocation.lng})
-      globeEl.current.controls().enableRotate = false;
+      setClick(true);
+      const countryLocation = getCountryLocation(onMouseDownCountry.properties.name);
+      translateGlobePos(click ? countryLocation ? {positionOnly: true, lat: countryLocation.lat, lng: countryLocation.lng} : false : {from: {y: 0}, to: {y: globeTranslateY}, lat: countryLocation.lat, lng: countryLocation.lng});
     } else {
-      setCountry(false)
-      translateGlobePos(click ? {from: {y: 200}, to: {y: 0}} : false)
-      globeEl.current.controls().enableRotate = true;
+      autoRotateTimeout();
+      setCountryTimeoutID = setTimeout(() => {
+        setCountry(false);
+      }, 2000);
+      translateGlobePos(click ? {from: {y: globeTranslateY}, to: {y: 0}} : false);
       setShowFeed(false);
       setClick(false);
     }
   };
+
+  const onMouseDown = () => {
+    console.log('mouse down')
+    clearTimeout(setCountryTimeoutID);
+    setOnMouseDownCountry(hoveredCountry)
+    autoRotateDisable();
+    var x = Math.round( globeEl.current.camera().position.x * 1e3 ) / 1e3;
+    var y = Math.round( globeEl.current.camera().position.y * 1e3 ) / 1e3;
+    var z = Math.round( globeEl.current.camera().position.z * 1e3 ) / 1e3;
+    setOnMouseDownPos({x: x, y: y, z: z})
+  }
+
   return (
     <>
-    <div onClick={onClick}>
-      <Globe
-        ref={globeEl}
-        waitForGlobeReady={true}
-        globeImageUrl= {globeImage}
-        backgroundImageUrl={backgroundImage}
-        bumpImageUrl= {bumpImage}
-        polygonsData={countries.features}
-        polygonAltitude={0.06}
-        polygonCapColor={d => d === selected ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
-        polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
-        polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
-        onPolygonHover={d => onHover(d)}
-        polygonLabel={() => `
-        <b>${selected ? selected.properties.name: ''}</b>
-        `}
-        width={width}
-        height={height}
-      />
-    </div>
+      <div onClick={onClick} onMouseDown={onMouseDown}>
+        <Globe
+          ref={globeEl}
+          waitForGlobeReady={true}
+          globeImageUrl= {globeImage}
+          backgroundImageUrl={backgroundImage}
+          bumpImageUrl= {bumpImage}
+          polygonsData={countries.features}
+          polygonAltitude={d => (d === country && click) ? 0.8 : 0.06}
+          polygonCapColor={d => (d === hoveredCountry || (d === country && click)) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
+          polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
+          polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
+          onPolygonHover={d => onHover(d)}
+          polygonLabel={() => `
+          <b>${hoveredCountry ? hoveredCountry.properties.name: ''}</b>
+          `}
+          width={width}
+          height={height}
+        />
+      </div>
     </>
   );
 };
