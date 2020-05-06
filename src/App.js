@@ -2,7 +2,7 @@ import React, { useState, lazy, Suspense } from 'react';
 import LoadingScreen from 'react-loading-screen';
 
 import UpdateSize from './components/UpdateSize';
-import World from './components/Globe';
+import World from './components/World';
 
 const Feed = lazy(() => import('./components/Feed'));
 
