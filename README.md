@@ -1,68 +1,102 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# TheGlobe_Frontend
+The Globe (TG) is a Website, allowing you to browse news in a new way. We gather news through RSS Feeds from Newspapers, and display them on a WebGL globe. 
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+**Table of Contents**
 
-### `npm start`
+- [Quick Start](#quick-start)
+  - [Local Installation](#local-installation)
+  - [Simulate deployment using docker](#simulate-deployment-using-docker)
+- [Components](#components)
+- [Project Structure](#structure)
+- [Functions](#functions)
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Quick Start
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+### Local Installation
+The following shows how to install the app on your local machine for development purpose.
 
-### `npm test`
+#### Requirements
+-  Node >= 8.10
+-  npm >= 5.6
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### Clone Repo
+```bash
+$ git clone https://git.lrsv.de/globe/globe_frontend.git
+$ cd globe_frontend
+```
 
-### `npm run build`
+#### Initial Installation
+The `package-lock.json` contains all the needed dev dependencies for this project. To install these:
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+$ npm install
+```
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+#### Run the App
+After the installation you can start the app in local network:
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+```bash
+$ npm start
+```
+or if you've installed yarn
+```bash
+$ yarn start
+```
 
-### `npm run eject`
+After the development server started the app will be available under [localhost:3000](http://localhost:3000)
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Simulate deployment using docker
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Since the app will be deployed with docker using the `Dockerfile` allows you to build and tag a Docker image:
+```bash
+$ docker build -t theglobe_frontend .
+```
+Run the container:
+```bash
+$ docker run -p 1337:80 theglobe_frontend
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Navigate to [localhost:1337](http://localhost:1337) in your browser to view the app.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Deployment
 
-## Learn More
+Please take a look at our [CI/CD system](https://git.lrsv.de/globe/management/-/blob/master/CICD.md), which we use to deploy our applications.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Components
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+The Globe Frontend is a single-page application and was built with [ReactJS](https://reactjs.org/). Since The Globe Backend is only for fetching data we've used [Create React App](https://github.com/facebook/create-react-app). That gave us a ready-made environment so we didn't had to worry about the backbone of the frontend. 
 
-### Code Splitting
+**Main React Components**
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+- [React GlobeGL](https://github.com/vasturiano/react-globe.gl/)
+  A React component for data visualization on a three-dimensional globe. The component itself uses [ThreeJS](https://threejs.org/) as rendering engine.
 
-### Analyzing the Bundle Size
+- [MDBootstrap](https://mdbootstrap.com/)
+  A design framework used to shape the news feed.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
+**Other components**
 
-### Making a Progressive Web App
+- [react-loading-screen](https://www.npmjs.com/package/react-loading-screen)
+- [react-clamp-lines](https://www.npmjs.com/package/react-clamp-lines)
+- [source-map-explorer](https://www.npmjs.com/package/source-map-explorer)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
+## Structure
 
-### Advanced Configuration
+Components and CSS files are located inside the `src` folder, as well as assets, datasets or other files.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
+The `index.js` is the top-level render of the React app and imports the `<App />` component, which is the main app component. 
 
-### Deployment
+Inside `App.js` all self-produced components are being imported from `src/components/`.
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
+The following describes the nested architecture of the app.
 
-### `npm run build` fails to minify
+- `App.js`
+  - `Globe.js`
+  - `UpdateSize.js`
+  - `Feed.js`
+    - `Article.js`
+    - `Country.js`
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+## Functions
