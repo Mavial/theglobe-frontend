@@ -28,31 +28,31 @@ const Feed = ({country, showFeed}) => {
     // Test
     const hotList = [
         {
-            title: "This is a test title hello",
-            description: "This is a test description and has to be a bit longher the the actual title, because it is how it is.",
-            publisher: "heinz.de"
+            title: "pellentesque habitant morbi tristique senectus et",
+            description: "odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel",
+            publisher: "cnn.de"
         },
         {
-            title: "This is a test ddddddddddddddddtitle hello",
-            description: "This is a test daaaadescription and has to be a bit longher the the actual title, because it is how it is.",
-            publisher: "heinz.de"
+            title: "pellentesque habitant morbi tristique senectus et",
+            description: "odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel",
+            publisher: "cnn.de"
         },
         {
-            title: "This is a test titddddddddddddle hello",
-            description: "This is a test dddescription and has to be a bit longher the the actual title, because it is how it is.",
-            publisher: "heinz.de"
+            title: "pellentesque habitant morbi tristique senectus et",
+            description: "odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel",
+            publisher: "cnn.de"
         }
     ];
     const newList = [
         {
-            title: "This is the aaaaaaaatest title for new news",
-            description: "This is a tesdddt description for new news and has to be a bit longher the the actual title, because it is how it is.",
-            publisher: "heinz.de"
+            title: "pellentesque habitant morbi tristique senectus et",
+            description: "odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel",
+            publisher: "cnn.de"
         },
         {
-            title: "This is thedddddd test title for new news",
-            description: "This is a test descripthhhhhion for new news and has to be a bit longher the the actual title, because it is how it is.",
-            publisher: "heinz.de"
+            title: "pellentesque habitant morbi tristique senectus et",
+            description: "odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel",
+            publisher: "cnn.de"
         }
     ];
 
