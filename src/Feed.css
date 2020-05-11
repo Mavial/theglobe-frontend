@@ -93,9 +93,10 @@
 .feed-button {
   width: 50%;
   height: 2.5rem;
-  color: rgb(22, 22, 22);
+  color: #555;
 }
 
 .feed-button-hover {
-  background-color: rgb(167, 167, 167) !important;
+  background-color: #555 !important;
+  color: white !important;
 }
