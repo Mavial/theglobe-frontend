@@ -2,12 +2,15 @@ import React, { useEffect, useRef, useState, useMemo} from 'react';
 import { TextureLoader, Color } from 'three';
 import Globe from 'react-globe.gl';
 import TWEEN from '@tweenjs/tween.js';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import geoJson from '../datasets/merged_countries_data.geojson';
 
-import globeImage from '../assets/globe/texture_1k.jpg';
-import bumpImage from '../assets/globe/bumpMap_1k.jpg'; // '//unpkg.com/three-globe/example/img/earth-topology.png'
+import globeImage from '../assets/globe/texture_4k.jpg';
+import bumpImage from '../assets/globe/bumpMap_4k.jpg'; // '//unpkg.com/three-globe/example/img/earth-topology.png'
 import backgroundImage from '../assets/globe/starfield_4k.png';
-import specularImage from '../assets/globe/specularMap_1k.jpg';
+import specularImage from '../assets/globe/specularMap_4k.jpg';
+
+import {isMobile} from "react-device-detect";
 
 const autoRotateTimeoutNum = 30; // in s
 const globeTranslateY = 230; // If the feed pops up how high the scene should be moved on the y-axis
@@ -16,15 +19,16 @@ const clickAccuracy = 0.8; // How accuarte clicks should be (to differenciate be
 var setCountryTimeoutID = null;
 var autoRotateTimeoutID = null;
 
-const World = ({setShowFeed, setCountry, country, width, height}) => {
+const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
   const globeEl = useRef();
   const [countries, setCountries] = useState({ features: []});
-  const [countriesLocation, setCountriesLocation] = useState()
   const [hover, setHover] = useState(false)
-  const [click, setClick] = useState(false)
+  const [touch, setTouch] = useState(false)
   const [hoveredCountry, setHoveredCountry] = useState()
   const [onMouseDownCountry, setOnMouseDownCountry] = useState()
   const [onMouseDownPos, setOnMouseDownPos] = useState()
+  const [onTouchStartPos, setOnTouchStartPos] = useState()
+  const [countryAlert, setCountryAlert] = useState(false)
 
   useMemo(() => {
     // load polygon data
@@ -40,9 +44,10 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
   }, []);
   useEffect(() => {
     const controls = globeEl.current.controls();
-    setTimeout(() => controls.maxDistance = 800);
+    setTimeout(() => {
+      controls.maxDistance = 800;
+    });
     controls.minDistance = 150;
-    // controls.dynamicDampingFactor = 0.3
     controls.autoRotateSpeed = 0.03;
   }, []);
 
@@ -74,16 +79,17 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
   }, []);
 
   const autoRotateTimeout = () => {
-    console.log('autoRotate: timeout set')
+    clearTimeout(autoRotateTimeoutID)
+    // console.log('autoRotate: timeout set')
     globeEl.current.controls().autoRotate = false;
     autoRotateTimeoutID = setTimeout(() => {
-      console.log('autoRotate: click=' + click + ' hover=' + hover)
-      globeEl.current.controls().autoRotate = (click || hover) ? false : true;
+      console.log('autoRotate: showFeed=' + showFeed + ' hover=' + hover)
+      globeEl.current.controls().autoRotate = (showFeed || hover) ? false : true;
     }, (autoRotateTimeoutNum * 1000))
   };
 
   const autoRotateDisable = () => {
-    console.log('autoRotate : disabled')
+    // console.log('autoRotate : disabled')
     clearTimeout(autoRotateTimeoutID)
     globeEl.current.controls().autoRotate = false
   };
@@ -122,15 +128,30 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
 
   const onHover = country => {
     setHoveredCountry(country);
-    if (country) {
-      autoRotateDisable();
-      console.log('hovered true');
-      setHover(true);
-    } else {
-      autoRotateTimeout();
-      console.log('hovered false');
-      setHover(false);
-    }
+      if (country) {
+        autoRotateDisable();
+        console.log(`hovered true, showFeed ${showFeed}`);
+        setHover(true);
+      } else {
+        autoRotateTimeout();
+        console.log(`hovered true, showFeed ${showFeed}`);
+        setHover(false);
+      }
+  };
+
+  const onTouchHover = country => {
+      if (country && touch) {
+        setHoveredCountry(country);
+        autoRotateDisable();
+        setCountryAlert(true);
+        console.log(`hovered true, touch true`);
+        setHover(true);
+      } else {
+        setHoveredCountry(false);
+        setCountryAlert(false);
+        console.log(`hovered false, touch false`);
+        setHover(false);
+      }
   };
 
   const roundPos = axis => {
@@ -141,9 +162,20 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
     return Math.abs(axis1 - axis2) < clickAccuracy
   }
 
+  const onMouseDown = () => {
+    console.log('mouse down')
+    clearTimeout(setCountryTimeoutID);
+    setOnMouseDownCountry(hoveredCountry)
+    autoRotateDisable();
+    var x = Math.round( globeEl.current.camera().position.x * 1e3 ) / 1e3;
+    var y = Math.round( globeEl.current.camera().position.y * 1e3 ) / 1e3;
+    var z = Math.round( globeEl.current.camera().position.z * 1e3 ) / 1e3;
+    setOnMouseDownPos({x: x, y: y, z: z})
+  }
+
   // TODO Rotation to Country
   // TODO translateY with Tween for a smooth translation
-  const onClick = () => {
+  const onMouseUp = () => {
     var actualClick = false;
 
     var x2 = roundPos(globeEl.current.camera().position.x);
@@ -161,53 +193,144 @@ const World = ({setShowFeed, setCountry, country, width, height}) => {
       autoRotateDisable();
       setCountry(onMouseDownCountry);
       setShowFeed(true);
-      setClick(true);
-      const countryLocation = getCountryLocation(onMouseDownCountry.properties.name);
-      translateGlobePos(click ? countryLocation ? {positionOnly: true, lat: countryLocation.lat, lng: countryLocation.lng} : false : {from: {y: 0}, to: {y: globeTranslateY}, lat: countryLocation.lat, lng: countryLocation.lng});
+      moveIt(true, onMouseDownCountry)
     } else {
       autoRotateTimeout();
       setCountryTimeoutID = setTimeout(() => {
         setCountry(false);
       }, 2000);
-      translateGlobePos(click ? {from: {y: globeTranslateY}, to: {y: 0}} : false);
       setShowFeed(false);
-      setClick(false);
+      moveIt(false)
     }
   };
 
-  const onMouseDown = () => {
-    console.log('mouse down')
+  function moveIt(boolean, selCountry) {
+    if (boolean) {
+      const countryLocation = getCountryLocation(selCountry.properties.name);
+      translateGlobePos((showFeed) ? countryLocation ? {positionOnly: true, lat: countryLocation.lat, lng: countryLocation.lng} : false : {from: {y: 0}, to: {y: globeTranslateY}, lat: countryLocation.lat, lng: countryLocation.lng});
+    } else {
+      translateGlobePos((showFeed) ? {from: {y: globeTranslateY}, to: {y: 0}} : false);
+    }
+  }
+  const onTouchStart = () => {
+    // console.log('touch start')
     clearTimeout(setCountryTimeoutID);
-    setOnMouseDownCountry(hoveredCountry)
     autoRotateDisable();
     var x = Math.round( globeEl.current.camera().position.x * 1e3 ) / 1e3;
     var y = Math.round( globeEl.current.camera().position.y * 1e3 ) / 1e3;
     var z = Math.round( globeEl.current.camera().position.z * 1e3 ) / 1e3;
-    setOnMouseDownPos({x: x, y: y, z: z})
+    setOnTouchStartPos({x: x, y: y, z: z})
+  }
+
+  const onTouchEnd = () => {
+    var actualTouch = false;
+
+    var x2 = roundPos(globeEl.current.camera().position.x);
+    var y2 = roundPos(globeEl.current.camera().position.y);
+    var z2 = roundPos(globeEl.current.camera().position.z);
+    var x1 = onTouchStartPos.x;
+    var y1 = onTouchStartPos.y;
+    var z1 = onTouchStartPos.z;
+
+    actualTouch = (calcActualClick(x1, x2) && calcActualClick(y1, y2) && calcActualClick(z1, z2) ? true : false);
+
+    console.log('Actual touch is: ' + actualTouch)
+
+    if (actualTouch){
+      if (showFeed) {
+        autoRotateTimeout();
+        setCountryTimeoutID = setTimeout(() => {
+          setCountry(false);
+        }, 2000);
+        setShowFeed(false);
+        moveIt(false)
+        globeEl.current.controls().enabled = true;
+        setTouch(false)
+      } else {
+        autoRotateTimeout();
+        setTouch(true)
+      }
+    } else {
+      autoRotateTimeout();
+      setTouch(false);
+    }
+  }
+  function onConfirm(){
+    console.log('confirm')
+    setCountryAlert(false)
+    autoRotateDisable();
+    globeEl.current.controls().enabled = false;
+    setCountry(hoveredCountry);
+    setShowFeed(true);
+    moveIt(true, hoveredCountry)
+  }
+  function onCancel(){
+    console.log('cancel')
+    setCountryAlert(false)
+    setTouch(false)
+  }
+
+  function onTouchStartButDesktop(){
+    alert('Are you using touch?')
   }
 
   return (
     <>
-      <div onClick={onClick} onMouseDown={onMouseDown}>
-        <Globe
-          ref={globeEl}
-          waitForGlobeReady={true}
-          globeImageUrl= {globeImage}
-          backgroundImageUrl={backgroundImage}
-          bumpImageUrl= {bumpImage}
-          polygonsData={countries.features}
-          polygonAltitude={d => (d === country && click) ? 0.8 : 0.06}
-          polygonCapColor={d => (d === hoveredCountry || (d === country && click)) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
-          polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
-          polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
-          onPolygonHover={d => onHover(d)}
-          polygonLabel={() => `
-          <b>${hoveredCountry ? hoveredCountry.properties.name: ''}</b>
-          `}
-          width={width}
-          height={height}
-        />
-      </div>
+      {countryAlert ?
+        <SweetAlert
+        title={`${hoveredCountry ? hoveredCountry.properties.name : ""}`}
+        showCancel
+        confirmBtnText="Yes"
+        cancelBtnText="No"
+        onConfirm={onConfirm}
+        onCancel={onCancel}
+        >
+          <span>Do you want to open the Feed?</span>
+        </SweetAlert>
+        : ""
+        }
+      {
+        isMobile ?
+          <div onTouchStart={() => onTouchStart()} onTouchEnd={() => onTouchEnd()}>
+            <Globe
+              ref={globeEl}
+              waitForGlobeReady={true}
+              globeImageUrl= {globeImage}
+              backgroundImageUrl={backgroundImage}
+              bumpImageUrl= {bumpImage}
+              polygonsData={countries.features}
+              polygonAltitude={d => (d === country && showFeed) ? 0.8 : 0.06}
+              polygonCapColor={d => (d === country && showFeed) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
+              polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
+              polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
+              onPolygonHover={d => showFeed && touch ? "" : onTouchHover(d)}
+              onPolygonClick={d => setCountryAlert(true)}
+              width={width}
+              height={height}
+            />
+          </div>
+        :
+          <div onMouseUp={() => onMouseUp()} onMouseDown={() => onMouseDown()} onTouchStart={() => onTouchStartButDesktop()}>
+            <Globe
+              ref={globeEl}
+              waitForGlobeReady={true}
+              globeImageUrl= {globeImage}
+              backgroundImageUrl={backgroundImage}
+              bumpImageUrl= {bumpImage}
+              polygonsData={countries.features}
+              polygonAltitude={d => (d === country && showFeed) ? 0.8 : 0.06}
+              polygonCapColor={d => (d === hoveredCountry || (d === country && showFeed)) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
+              polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
+              polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
+              onPolygonHover={d => onHover(d)}
+              polygonLabel={() => `
+              <b>${hoveredCountry ? hoveredCountry.properties.name: ''}</b>
+              `}
+              width={width}
+              height={height}
+            />
+          </div>
+      }
     </>
   );
 };
