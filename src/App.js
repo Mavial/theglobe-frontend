@@ -28,10 +28,11 @@ const App = () => {
         textColor='#f0f0f0'
         text='The Globe is ready soon'
       >
-        <div></div>
+        {null}
       </LoadingScreen>
       <World
         setShowFeed={setShowFeed}
+        showFeed={showFeed}
         setCountry={setCountry}
         country={country}
         height={height}

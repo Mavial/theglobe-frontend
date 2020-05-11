@@ -60,7 +60,6 @@ const Feed = ({country, showFeed}) => {
         <>
         <div className="d-flex justify-content-center">
         <div
-            style={{border: '1px solid black'}}
             className={`
                 sm-feed feed rounded mb-0
                 ${showFeed ? 'show' : 'hide'}
@@ -72,11 +71,11 @@ const Feed = ({country, showFeed}) => {
                     onMouseEnter={() => setBtn1Hover(true)}
                     onMouseLeave={() => setBtn1Hover(false)}
                     onClick={() => clicked1()}
-                    style={{backgroundColor: `${btn1clicked ? 'rgb(167, 167, 167)' : 'white'}`}}
+                    style={{backgroundColor: `${btn1clicked ? '#555' : 'white'}`, color: `${btn1clicked ? 'white' : '#555'}`}}
                     className={`
-                        border border-left-0 border-dark feed-button
+                        border border-bottom-0 border-left-0 border-right-0 border-dark feed-button
                         ${btn1hover ? 'feed-button-hover' : 'feed-button-nohover'}
-                        ${btn1clicked ? 'border-right' : 'border-right-0'}
+
                     `}
                 >
                     HOT
@@ -85,11 +84,11 @@ const Feed = ({country, showFeed}) => {
                     onMouseEnter={() => setBtn2Hover(true)}
                     onMouseLeave={() => setBtn2Hover(false)}
                     onClick={() => clicked2()}
-                    style={{backgroundColor: `${btn2clicked ? 'rgb(167, 167, 167)' : 'white'}`}}
+                    style={{backgroundColor: `${btn2clicked ? '#555' : 'white'}`, color: `${btn2clicked ? 'white' : '#555'}`}}
                     className={`
-                        border border-right-0 border-dark feed-button
+                        border border-bottom-0 border-left-0 border-right-0 border-dark feed-button
                         ${btn2hover ? 'feed-button-hover' : 'feed-button-nohover'}
-                        ${btn2clicked ? 'border-left' : 'border-left-0'}
+
                     `}
                 >
                     NEW
