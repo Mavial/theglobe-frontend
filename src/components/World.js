@@ -29,6 +29,9 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
   const [onMouseDownPos, setOnMouseDownPos] = useState()
   const [onTouchStartPos, setOnTouchStartPos] = useState()
   const [countryAlert, setCountryAlert] = useState(false)
+  const [manuelMobile, setManuelMobile] = useState(false)
+  const [touchAlert, setTouchAlert] = useState(false)
+  const [touchAlertDisable, setTouchAlertDisable] = useState(false)
 
   useMemo(() => {
     // load polygon data
@@ -255,7 +258,7 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
       setTouch(false);
     }
   }
-  function onConfirm(){
+  function onFeedConfirm(){
     console.log('confirm')
     setCountryAlert(false)
     autoRotateDisable();
@@ -264,14 +267,10 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
     setShowFeed(true);
     moveIt(true, hoveredCountry)
   }
-  function onCancel(){
+  function onFeedCancel(){
     console.log('cancel')
     setCountryAlert(false)
     setTouch(false)
-  }
-
-  function onTouchStartButDesktop(){
-    alert('Are you using touch?')
   }
 
   return (
@@ -282,15 +281,28 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
         showCancel
         confirmBtnText="Yes"
         cancelBtnText="No"
-        onConfirm={onConfirm}
-        onCancel={onCancel}
+        onConfirm={() => onFeedConfirm()}
+        onCancel={() => onFeedCancel()}
         >
           <span>Do you want to open the Feed?</span>
         </SweetAlert>
         : ""
-        }
+      }
+      {touchAlert ?
+        <SweetAlert
+          warning
+          title="Are you using Touch?"
+          showCancel
+          confirmBtnText="Yes"
+          cancelBtnText="No"
+          onConfirm={() => {setManuelMobile(true); setTouchAlert(false)}}
+          onCancel={() => {setTouchAlertDisable(true); setTouchAlert(false)}}
+        />
+        :
+        ""
+      }
       {
-        isMobile ?
+        isMobile || manuelMobile ?
           <div onTouchStart={() => onTouchStart()} onTouchEnd={() => onTouchEnd()}>
             <Globe
               ref={globeEl}
@@ -303,14 +315,14 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
               polygonCapColor={d => (d === country && showFeed) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
               polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
               polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
-              onPolygonHover={d => showFeed && touch ? "" : onTouchHover(d)}
-              onPolygonClick={d => setCountryAlert(true)}
+              onPolygonHover={d => (showFeed && touch) ? "" : onTouchHover(d)}
+              onPolygonClick={d => (showFeed && touch && !hoveredCountry) ? "" : setCountryAlert(true)}
               width={width}
               height={height}
             />
           </div>
         :
-          <div onMouseUp={() => onMouseUp()} onMouseDown={() => onMouseDown()} onTouchStart={() => onTouchStartButDesktop()}>
+          <div onMouseUp={() => onMouseUp()} onMouseDown={() => onMouseDown()} onTouchStart={() => touchAlertDisable ? null : setTouchAlert(true)}>
             <Globe
               ref={globeEl}
               waitForGlobeReady={true}
