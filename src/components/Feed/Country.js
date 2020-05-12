@@ -1,5 +1,5 @@
 import React from 'react';
-import '../Country.css';
+import '../../css/Country.css';
 
 const Country = ({country, showFeed}) => {
 

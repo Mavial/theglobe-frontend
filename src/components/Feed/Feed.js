@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../Feed.css';
+import '../../css/Feed.css';
 import Article from './Article';
 import Country from './Country'
 

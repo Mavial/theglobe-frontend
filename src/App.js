@@ -2,9 +2,9 @@ import React, { useState, lazy, Suspense } from 'react';
 import LoadingScreen from 'react-loading-screen';
 
 import UpdateSize from './components/UpdateSize';
-import World from './components/World';
+import World from './components/World/World';
 
-const Feed = lazy(() => import('./components/Feed'));
+const Feed = lazy(() => import('./components/Feed/Feed'));
 
 const App = () => {
   const [showFeed, setShowFeed] = useState(false)
@@ -13,7 +13,7 @@ const App = () => {
   const [width, setWidth] = useState(window.innerWidth)
   const [loading, setLoading] = useState(true)
 
-  window.addEventListener('load', (event) => {
+  window.addEventListener('load', () => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);

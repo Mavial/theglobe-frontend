@@ -1,9 +1,9 @@
 import React, {} from 'react';
 import { MDBCol, MDBRow } from 'mdbreact';
 import ClampLines from 'react-clamp-lines';
-import testPicture from '../assets/test-picture.jpg';
+import testPicture from '../../assets/test-picture.jpg';
 
-import '../Article.css';
+import '../../css/Article.css';
 
 const Article = ({item}) => {
 
