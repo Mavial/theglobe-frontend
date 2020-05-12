@@ -10,7 +10,7 @@ import bumpImage from '../assets/globe/bumpMap_4k.jpg'; // '//unpkg.com/three-gl
 import backgroundImage from '../assets/globe/starfield_4k.png';
 import specularImage from '../assets/globe/specularMap_4k.jpg';
 
-import {isMobile} from "react-device-detect";
+import {isMobile, isDesktop} from "react-device-detect";
 
 const autoRotateTimeoutNum = 30; // in s
 const globeTranslateY = 230; // If the feed pops up how high the scene should be moved on the y-axis
@@ -32,6 +32,9 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
   const [manuelMobile, setManuelMobile] = useState(false)
   const [touchAlert, setTouchAlert] = useState(false)
   const [touchAlertDisable, setTouchAlertDisable] = useState(false)
+  const [manuelDesktop, setManuelDesktop] = useState(false)
+  const [clickAlert, setClickAlert] = useState(false)
+  const [clickAlertDisable, setClickAlertDisable] = useState(false)
 
   useMemo(() => {
     // load polygon data
@@ -155,6 +158,7 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
         console.log(`hovered false, touch false`);
         setHover(false);
       }
+      setOnTouchStartPos(false)
   };
 
   const roundPos = axis => {
@@ -275,7 +279,7 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
 
   return (
     <>
-      {countryAlert ?
+      {(countryAlert && !manuelDesktop) ?
         <SweetAlert
         title={`${hoveredCountry ? hoveredCountry.properties.name : ""}`}
         showCancel
@@ -295,53 +299,66 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
           showCancel
           confirmBtnText="Yes"
           cancelBtnText="No"
-          onConfirm={() => {setManuelMobile(true); setTouchAlert(false)}}
+          onConfirm={() => {setClickAlertDisable(false); setManuelDesktop(false); setManuelMobile(true); setTouchAlert(false)}}
           onCancel={() => {setTouchAlertDisable(true); setTouchAlert(false)}}
         />
         :
         ""
       }
-      {
-        isMobile || manuelMobile ?
-          <div onTouchStart={() => onTouchStart()} onTouchEnd={() => onTouchEnd()}>
-            <Globe
-              ref={globeEl}
-              waitForGlobeReady={true}
-              globeImageUrl= {globeImage}
-              backgroundImageUrl={backgroundImage}
-              bumpImageUrl= {bumpImage}
-              polygonsData={countries.features}
-              polygonAltitude={d => (d === country && showFeed) ? 0.8 : 0.06}
-              polygonCapColor={d => (d === country && showFeed) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
-              polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
-              polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
-              onPolygonHover={d => (showFeed && touch) ? "" : onTouchHover(d)}
-              onPolygonClick={d => (showFeed && touch && !hoveredCountry) ? "" : setCountryAlert(true)}
-              width={width}
-              height={height}
-            />
-          </div>
+      {clickAlert ?
+        <SweetAlert
+          warning
+          title="Are you using a Mouse?"
+          showCancel
+          confirmBtnText="Yes"
+          cancelBtnText="No"
+          onConfirm={() => {setTouchAlertDisable(false); setCountryAlert(false); setManuelMobile(false); setManuelDesktop(true); setClickAlert(false)}}
+          onCancel={() => {setCountryAlert(false); setClickAlertDisable(true); setClickAlert(false)}}
+        />
         :
-          <div onMouseUp={() => onMouseUp()} onMouseDown={() => onMouseDown()} onTouchStart={() => touchAlertDisable ? null : setTouchAlert(true)}>
-            <Globe
-              ref={globeEl}
-              waitForGlobeReady={true}
-              globeImageUrl= {globeImage}
-              backgroundImageUrl={backgroundImage}
-              bumpImageUrl= {bumpImage}
-              polygonsData={countries.features}
-              polygonAltitude={d => (d === country && showFeed) ? 0.8 : 0.06}
-              polygonCapColor={d => (d === hoveredCountry || (d === country && showFeed)) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
-              polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
-              polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
-              onPolygonHover={d => onHover(d)}
-              polygonLabel={() => `
-              <b>${hoveredCountry ? hoveredCountry.properties.name: ''}</b>
-              `}
-              width={width}
-              height={height}
-            />
-          </div>
+        ""
+      }
+      {
+        (isMobile || manuelMobile) && !(isDesktop || manuelDesktop) ?
+        <div onTouchStart={() => onTouchStart()} onTouchEnd={() => onTouchEnd()} onMouseUp={() => clickAlertDisable ? null : onTouchStartPos ? null : setClickAlert(true)}>
+          <Globe
+            ref={globeEl}
+            waitForGlobeReady={true}
+            globeImageUrl= {globeImage}
+            backgroundImageUrl={backgroundImage}
+            bumpImageUrl= {bumpImage}
+            polygonsData={countries.features}
+            polygonAltitude={d => (d === country && showFeed) ? 0.8 : 0.06}
+            polygonCapColor={d => (d === country && showFeed) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
+            polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
+            polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
+            onPolygonHover={d => (!showFeed && touch) ? onTouchHover(d) : null}
+            onPolygonClick={() => (!showFeed && touch && hoveredCountry) ? setCountryAlert(true) : null}
+            width={width}
+            height={height}
+          />
+        </div>
+        :
+        <div onMouseUp={() => onMouseUp()} onMouseDown={() => onMouseDown()} onTouchStart={() => touchAlertDisable ? null : setTouchAlert(true)}>
+          <Globe
+            ref={globeEl}
+            waitForGlobeReady={true}
+            globeImageUrl= {globeImage}
+            backgroundImageUrl={backgroundImage}
+            bumpImageUrl= {bumpImage}
+            polygonsData={countries.features}
+            polygonAltitude={d => (d === country && showFeed) ? 0.8 : 0.06}
+            polygonCapColor={d => (d === hoveredCountry || (d === country && showFeed)) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
+            polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
+            polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
+            onPolygonHover={d => onHover(d)}
+            polygonLabel={() => `
+            <b>${hoveredCountry ? hoveredCountry.properties.name: ''}</b>
+            `}
+            width={width}
+            height={height}
+          />
+        </div>
       }
     </>
   );
