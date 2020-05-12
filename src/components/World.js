@@ -209,6 +209,7 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
       setShowFeed(false);
       moveIt(false)
     }
+    globeEl.current.controls().enabled = true;
   };
 
   function moveIt(boolean, selCountry) {
