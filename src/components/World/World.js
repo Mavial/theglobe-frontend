@@ -5,7 +5,7 @@ import SweetAlert from 'react-bootstrap-sweetalert';
 import geoJson from '../../datasets/merged_countries_data.geojson';
 
 import {moveTheGlobe} from "./Methods/MoveGlobe";
-import {autoRotateDisable} from "./Methods/Rotate";
+import {autoRotateDisable, autoRotateTimeout} from "./Methods/Rotate";
 import {onTouchStart, onTouchEnd, onTouchHover} from "./EventHandlers/Touch"
 import {onMouseDown, onMouseUp, onHover} from "./EventHandlers/Mouse"
 
@@ -83,9 +83,8 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
 
 
   function onFeedConfirm() {
-    console.log('confirm')
+    // console.log('confirm')
     setCountryAlert(false)
-    autoRotateDisable(globeEl);
     globeEl.current.controls().enabled = false;
     setCountry(hoveredCountry);
     setShowFeed(true);
@@ -94,9 +93,11 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
 
 
   function onFeedCancel(){
-    console.log('cancel')
-    setCountryAlert(false)
-    setTouch(false)
+    // console.log('cancel');
+    setCountryAlert(false);
+    setHover(false);
+    setTouch(false);
+    autoRotateTimeout(globeEl, showFeed, false, autoRotateTimeoutNum);
   }
 
   return (
@@ -157,7 +158,7 @@ const World = ({setShowFeed, showFeed, setCountry, country, width, height}) => {
             polygonCapColor={d => (d === country && showFeed) ? 'rgba(52, 152, 219, 1)' : 'rgba(52, 152, 219, 0.4)'}
             polygonSideColor={() =>'rgba(52, 152, 219, 0.0)'}
             polygonStrokeColor={() => 'rgba(250, 250, 250, 1)'}
-            onPolygonHover={d => (!showFeed && touch) ? onTouchHover(d, touch, setHoveredCountry, globeEl, setCountryAlert, setHover, setOnTouchStartPos) : null}
+            onPolygonHover={d => (!showFeed && !globeEl.current.controls().autoRotate && touch) ? onTouchHover(d, touch, setHoveredCountry, globeEl, setCountryAlert, setHover, setOnTouchStartPos, setTouch) : null}
             onPolygonClick={() => (!showFeed && touch && hoveredCountry) ? setCountryAlert(true) : null}
             width={width}
             height={height}

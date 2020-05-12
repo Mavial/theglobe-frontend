@@ -51,11 +51,11 @@ export const onTouchEnd = (globeEl, onTouchStartPos, showFeed, hover, autoRotate
 }
 
 
-export const onTouchHover = (country, touch, setHoveredCountry, globeEl, setCountryAlert, setHover, setOnTouchStartPos) => {
+export const onTouchHover = (country, touch, setHoveredCountry, globeEl, setCountryAlert, setHover, setOnTouchStartPos, setTouch) => {
   if (country && touch) {
     setHoveredCountry(country);
-    autoRotateDisable(globeEl);
     setCountryAlert(true);
+    autoRotateDisable(globeEl);
     // console.log(`hovered true, touch true`);
     setHover(true);
   } else {

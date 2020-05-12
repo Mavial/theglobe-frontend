@@ -6,7 +6,7 @@ function translateGlobePos(obj, globeEl) {
     if (obj.positionOnly === true) {
       globeEl.current.pointOfView({lat: obj.lat, lng: obj.lng}, 1400)
     } else {
-      console.log('translating Globe now')
+      // console.log('translating Globe now')
       const from = obj.from
       const to = obj.to
       var current_position = from.y
