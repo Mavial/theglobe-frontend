@@ -19,11 +19,6 @@ code {
     monospace;
 }
 
-canvas {
-  z-index: 1;
-  background-color: black;
-}
-
 /* width */
 ::-webkit-scrollbar {
   width: 0px;
