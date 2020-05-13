@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../Feed.css';
+import '../../css/Feed.css';
 import Article from './Article';
 import Country from './Country'
 
-const Feed = ({country, showFeed}) => {
+const Feed = ({country, previewFeed, showFeed}) => {
 
     const [btn1clicked, setBtn1Clicked] = useState(true)
     const [btn2clicked, setBtn2Clicked] = useState(false)
@@ -63,9 +63,10 @@ const Feed = ({country, showFeed}) => {
             className={`
                 sm-feed feed rounded mb-0
                 ${showFeed ? 'show' : 'hide'}
+                ${!showFeed ? previewFeed ? 'preview' : '' : ''}
             `}
         >
-            <Country country={country} showFeed={showFeed}/>
+            <Country country={country}/>
             <div className="button-container">
                 <button
                     onMouseEnter={() => setBtn1Hover(true)}

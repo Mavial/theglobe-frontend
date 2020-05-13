@@ -29,6 +29,13 @@
     transform: translateY(0);
     visibility: visible;
   }
+  .preview {
+    transition-duration: 0.5s, 0s;
+    transition-property: transform, visibility;
+    transition-delay: 0s, 0s;
+    transform: translateY(calc(100% - 54px));
+    visibility: visible;
+  }
 }
 @media (min-width: 860px) {
   .feed {
@@ -56,6 +63,13 @@
     transform: translateY(0);
     visibility: visible;
     bottom: 2%;
+  }
+  .preview {
+    transition-duration: 0.5s, 0s;
+    transition-property: transform, visibility;
+    transition-delay: 0s, 0s;
+    transform: translateY(calc(100% - 54px));
+    visibility: visible;
   }
 
 }
