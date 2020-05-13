@@ -1,0 +1,92 @@
+@media (max-width: 859.98px) {
+    .expand-button-outer-box {
+        z-index: 100;
+        position: fixed;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 62vh;
+        background-color: rgba(255, 255, 255, 0);
+    }
+    .hide {
+        transition-duration: 2s, 0s;
+        transition-property: transform, visibility;
+        transition-delay: 0s, 2s;
+        transform: translateY(100%);
+        visibility: hidden;
+      }
+      .show {
+        transition-duration: 2s, 0s;
+        transition-property: transform, visibility;
+        transition-delay: 0s, 0s;
+        transform: translateY(0);
+        visibility: visible;
+      }
+    .preview {
+        transition-duration: 0.5s, 0s;
+        transition-property: transform, visibility;
+        transition-delay: 0s, 0s;
+        transform: translateY(calc(100% - 54px));
+        visibility: visible;
+    }
+}
+
+@media (min-width: 860px) {
+    .expand-button-outer-box {
+        z-index: 100;
+        position: fixed;
+        overflow: hidden;
+        bottom: 0;
+        margin: 0;
+        padding: 0;
+        width:70%;
+        max-width: 900px;
+        height: 62vh;
+        background-color: rgba(255, 255, 255, 0);
+    }
+    .hide {
+        transition-duration: 2s, 0s;
+        transition-property: transform, visibility;
+        transition-delay: 0s, 2s;
+        transform: translateY(100%);
+        visibility: hidden;
+      }
+      .show {
+        transition-duration: 2s, 0s;
+        transition-property: transform, visibility;
+        transition-delay: 0s, 0s;
+        transform: translateY(0);
+        visibility: visible;
+        bottom: 2%;
+      }
+    .preview {
+        transition-duration: 0.5s, 0s;
+        transition-property: transform, visibility;
+        transition-delay: 0s, 0s;
+        transform: translateY(calc(100% - 54px));
+        visibility: visible;
+    }
+}
+
+.expand-button-container {
+    position: absolute;
+    top: 0;
+    height: 54px;
+    font-size: 36px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.expand-button svg {
+    right: 15px;
+    position: absolute;
+    top: 15px;
+    height: 24px;
+    width: 24px;
+    fill: #555;
+}
+.expand-button svg:hover {
+
+    fill: rgb(0, 0, 0);
+}

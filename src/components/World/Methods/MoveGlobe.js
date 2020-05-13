@@ -1,7 +1,7 @@
 import TWEEN from '@tweenjs/tween.js';
 import {getCountryLocation} from './Calculations';
 
-function translateGlobePos(obj, globeEl) {
+export function translateGlobePos(obj, globeEl) {
   if (obj !== false) {
     if (obj.positionOnly === true) {
       globeEl.current.pointOfView({lat: obj.lat, lng: obj.lng}, 1400)

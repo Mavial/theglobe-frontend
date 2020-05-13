@@ -2,12 +2,14 @@ import {autoRotateDisable, autoRotateTimeout} from "../Methods/Rotate";
 import {moveTheGlobe} from "../Methods/MoveGlobe";
 import {calcActualClick} from "../Methods/Calculations";
 
+var setCountryTimeoutID = null;
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////// TOUCH HANDLING /////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-export const onTouchStart = (globeEl, setCountryTimeoutID, setOnTouchStartPos) => {
+export const onTouchStart = (globeEl, setOnTouchStartPos) => {
   // console.log('touch start')
   clearTimeout(setCountryTimeoutID);
   autoRotateDisable(globeEl);
@@ -18,7 +20,7 @@ export const onTouchStart = (globeEl, setCountryTimeoutID, setOnTouchStartPos) =
 }
 
 
-export const onTouchEnd = (globeEl, onTouchStartPos, showFeed, hover, autoRotateTimeoutNum, countries, globeTranslateY, setCountry, setShowFeed, setTouch, clickAccuracy, setCountryTimeoutID) => {
+export const onTouchEnd = (globeEl, onTouchStartPos, showFeed, hover, autoRotateTimeoutNum, countries, globeTranslateY, setCountry, setShowFeed, setTouch, clickAccuracy, setHoveredCountry, setPreviewFeed) => {
   var actualTouch = false;
 
   var x1 = onTouchStartPos.x;
@@ -33,9 +35,9 @@ export const onTouchEnd = (globeEl, onTouchStartPos, showFeed, hover, autoRotate
   if (actualTouch){
     if (showFeed) {
       autoRotateTimeout(globeEl, showFeed, hover, autoRotateTimeoutNum);
-      setCountryTimeoutID = setTimeout(() => {
-        setCountry(false);
-      }, 2000);
+      // setCountryTimeoutID = setTimeout(() => {
+      //   setCountry(false);
+      // }, 2000);
       setShowFeed(false);
       moveTheGlobe(false, null, globeEl, showFeed, globeTranslateY, countries)
       globeEl.current.controls().enabled = true;
@@ -47,22 +49,28 @@ export const onTouchEnd = (globeEl, onTouchStartPos, showFeed, hover, autoRotate
   } else {
     autoRotateTimeout(globeEl, showFeed, hover, autoRotateTimeoutNum);
     setTouch(false);
+    setHoveredCountry(false)
+    setPreviewFeed(false)
   }
 }
 
 
-export const onTouchHover = (country, touch, setHoveredCountry, globeEl, setCountryAlert, setHover, setOnTouchStartPos, setTouch) => {
+export const onTouchHover = (country, touch, setHoveredCountry, globeEl, setHover, setOnTouchStartPos, setTouch, setCountry, setPreviewFeed, globeTranslateY, countries) => {
   if (country && touch) {
     setHoveredCountry(country);
-    setCountryAlert(true);
+    setCountry(country);
+    setPreviewFeed(true);
     autoRotateDisable(globeEl);
+    // moveTheGlobe(true, country, globeEl, true, globeTranslateY, countries)
+    // console.log('hover true')
     // console.log(`hovered true, touch true`);
     setHover(true);
+    setTouch(false)
   } else {
-    setHoveredCountry(false);
-    setCountryAlert(false);
     // console.log(`hovered false, touch false`);
     setHover(false);
+    setPreviewFeed(false)
+    setHoveredCountry(false)
   }
-  setOnTouchStartPos(false)
+  setTimeout(() => {setOnTouchStartPos(false)});
 };

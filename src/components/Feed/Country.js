@@ -1,9 +1,10 @@
 import React from 'react';
 import '../../css/Country.css';
 
-const Country = ({country, showFeed}) => {
+const Country = ({country}) => {
 
     return(
+        <>
         <div className={`
             d-flex justify-content-center
             `}>
@@ -11,11 +12,13 @@ const Country = ({country, showFeed}) => {
             text-center
             country-sign-container
             border-bottom border-dark
-            ${showFeed ? 'country-show' : 'country-hide'}
             `}>
-                <p>{country ? country.properties.name : ''}</p>
+                <div>
+                    <p>{country ? country.properties.name : ''}</p>
+                </div>
             </div>
         </div>
+        </>
     )
 };
 

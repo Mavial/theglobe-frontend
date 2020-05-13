@@ -2,13 +2,18 @@ import {autoRotateDisable, autoRotateTimeout} from "../Methods/Rotate";
 import {moveTheGlobe} from "../Methods/MoveGlobe";
 import {calcActualClick} from "../Methods/Calculations";
 
+
+var setCountryTimeoutID = null;
+
   //////////////////////////////////////////////////////////////////////////////////////////////////
   ///////////////////////////////////////// MOUSE HANDLING /////////////////////////////////////////
   //////////////////////////////////////////////////////////////////////////////////////////////////
 
-export const onMouseDown = (setCountryTimeoutID, setOnMouseDownCountry, hoveredCountry, globeEl, setOnMouseDownPos) => {
+export const onMouseDown = (setOnMouseDownCountry, hoveredCountry, globeEl, setOnMouseDownPos) => {
   // console.log('mouse down')
+  console.log(setCountryTimeoutID)
   clearTimeout(setCountryTimeoutID);
+  console.log(setCountryTimeoutID)
   setOnMouseDownCountry(hoveredCountry)
   autoRotateDisable(globeEl);
   var x = globeEl.current.camera().position.x
@@ -18,7 +23,7 @@ export const onMouseDown = (setCountryTimeoutID, setOnMouseDownCountry, hoveredC
 }
 
 
-export const onMouseUp = (onMouseDownPos, globeEl, onMouseDownCountry, setCountry, setShowFeed, showFeed, globeTranslateY, countries, hover, autoRotateTimeoutNum, setCountryTimeoutID, clickAccuracy) => {
+export const onMouseUp = (onMouseDownPos, globeEl, onMouseDownCountry, setCountry, setShowFeed, showFeed, globeTranslateY, countries, hover, autoRotateTimeoutNum, clickAccuracy) => {
   var actualClick = false;
 
   var x1 = onMouseDownPos.x;
@@ -37,7 +42,9 @@ export const onMouseUp = (onMouseDownPos, globeEl, onMouseDownCountry, setCountr
     moveTheGlobe(true, onMouseDownCountry, globeEl, showFeed, globeTranslateY, countries)
   } else {
     autoRotateTimeout(globeEl, showFeed, hover, autoRotateTimeoutNum);
+    console.log(setCountryTimeoutID)
     setCountryTimeoutID = setTimeout(() => {
+      console.log(setCountryTimeoutID)
       setCountry(false);
     }, 2000);
     setShowFeed(false);
