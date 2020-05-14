@@ -1,6 +1,7 @@
 @media (max-width: 859.98px) {
     .expand-button-outer-box {
         z-index: 100;
+        pointer-events: none;
         position: fixed;
         bottom: 0;
         margin: 0;
@@ -35,6 +36,7 @@
 @media (min-width: 860px) {
     .expand-button-outer-box {
         z-index: 100;
+        pointer-events: none;
         position: fixed;
         overflow: hidden;
         bottom: 0;
@@ -69,6 +71,10 @@
     }
 }
 
+.expand-button {
+    pointer-events: all;
+}
+
 .expand-button-container {
     position: absolute;
     top: 0;
@@ -87,6 +93,5 @@
     fill: #555;
 }
 .expand-button svg:hover {
-
     fill: rgb(0, 0, 0);
 }
