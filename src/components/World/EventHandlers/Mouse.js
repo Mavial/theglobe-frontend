@@ -11,9 +11,7 @@ var setCountryTimeoutID = null;
 
 export const onMouseDown = (setOnMouseDownCountry, hoveredCountry, globeEl, setOnMouseDownPos) => {
   // console.log('mouse down')
-  console.log(setCountryTimeoutID)
   clearTimeout(setCountryTimeoutID);
-  console.log(setCountryTimeoutID)
   setOnMouseDownCountry(hoveredCountry)
   autoRotateDisable(globeEl);
   var x = globeEl.current.camera().position.x
@@ -42,9 +40,7 @@ export const onMouseUp = (onMouseDownPos, globeEl, onMouseDownCountry, setCountr
     moveTheGlobe(true, onMouseDownCountry, globeEl, showFeed, globeTranslateY, countries)
   } else {
     autoRotateTimeout(globeEl, showFeed, hover, autoRotateTimeoutNum);
-    console.log(setCountryTimeoutID)
     setCountryTimeoutID = setTimeout(() => {
-      console.log(setCountryTimeoutID)
       setCountry(false);
     }, 2000);
     setShowFeed(false);

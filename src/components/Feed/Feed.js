@@ -9,6 +9,7 @@ const Feed = ({country, previewFeed, showFeed}) => {
     const [btn2clicked, setBtn2Clicked] = useState(false)
     const [btn1hover, setBtn1Hover] = useState(false)
     const [btn2hover, setBtn2Hover] = useState(false)
+    const [hotList, setHotList] = useState([])
 
     const articleContainerRef = useRef(null)
 
@@ -25,24 +26,6 @@ const Feed = ({country, previewFeed, showFeed}) => {
         articleContainerRef.current.scrollTop = 0;
     }, [country, btn1clicked, btn2clicked])
 
-    // Test
-    const hotList = [
-        {
-            title: "pellentesque habitant morbi tristique senectus et",
-            description: "odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel",
-            publisher: "cnn.de"
-        },
-        {
-            title: "pellentesque habitant morbi tristique senectus et",
-            description: "odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel",
-            publisher: "cnn.de"
-        },
-        {
-            title: "pellentesque habitant morbi tristique senectus et",
-            description: "odio facilisis mauris sit amet massa vitae tortor condimentum lacinia quis vel",
-            publisher: "cnn.de"
-        }
-    ];
     const newList = [
         {
             title: "pellentesque habitant morbi tristique senectus et",
