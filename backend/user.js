@@ -16,4 +16,4 @@ let userSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model('frontend_users', userSchema)
+module.exports = mongoose.model('users', userSchema)

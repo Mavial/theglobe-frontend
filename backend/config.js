@@ -34,6 +34,6 @@ module.exports = {
     port: '27137',
     username: process.env.MONGOUSER,
     password: process.env.MONGOPASS,
-    name: 'theglobe-test'
+    name: 'theglobe'
   }
 };
