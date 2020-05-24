@@ -3,6 +3,7 @@ import LoadingScreen from 'react-loading-screen';
 
 import UpdateSize from './components/UpdateSize';
 import World from './components/World/World';
+import SignOut from './components/SignOut';
 
 const Feed = lazy(() => import('./components/Feed/Feed'));
 
@@ -23,6 +24,7 @@ const App = () => {
 
   return (
     <>
+      <SignOut/>
       <LoadingScreen
         loading={loading}
         bgColor='#000817'

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-signin-client_id" content="672422666473-5njm9gr168t84s7keu72qhkqr27cp0v1.apps.googleusercontent.com">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+
+    <title>SignOut</title>
+</head>
+<body>
+  <style>
+    body {
+      background-color: #000817;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      color: white;
+    }
+    .box {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .inner-box {
+      margin-top: -53px;
+    }
+
+  </style>
+  <div class="box">
+    <div class="inner-box">
+      <p class="h1 font-weight-light">Signing Out...</p>
+    </div>
+  </div>
+  <script>
+    function init() {
+      gapi.load('auth2', function() {
+        /* Ready. Make a call to gapi.auth2.init or some other API */
+        var googleAuth = gapi.auth2.init({client_id: '672422666473-5njm9gr168t84s7keu72qhkqr27cp0v1.apps.googleusercontent.com'})
+        googleAuth.then(OnInit, OnError)
+      });
+    }
+    function OnInit(googleAuth) {
+      signOut(googleAuth);
+    }
+    function OnError(res) {
+      console.log(res)
+      console.log('Error while trying to sign out')
+      setTimeout(() => {
+        window.location.pathname = ('/error');
+      }, 10000)
+
+    }
+    function signOut(googleAuth) {
+      if (googleAuth.isSignedIn.get()) {
+        googleAuth.signOut().then(function () {
+          console.log('User signed out.');
+        });
+      }
+      var xhr = new window.XMLHttpRequest();
+          xhr.open('POST', '/signout_callback', false);
+          xhr.setRequestHeader('Content-Type', 'application/json');
+          xhr.onload = function() {
+              window.location.pathname = xhr.response;
+          };
+          xhr.send(JSON.stringify({
+            singed_out: true
+          }));
+    }
+  </script>
+  <script src="https://apis.google.com/js/platform.js?onload=init" async defer></script>
+</body>
+</html>

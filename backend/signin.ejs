@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="google-signin-client_id" content="672422666473-5njm9gr168t84s7keu72qhkqr27cp0v1.apps.googleusercontent.com">
+    <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <!-- Google Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap">
+  <!-- Bootstrap core CSS -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <title>Login</title>
+</head>
+<body>
+  <style>
+    body {
+      background-color: #000817;
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      color: white;
+    }
+    .box {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+    .inner-box {
+      margin-top: -53px;
+    }
+
+  </style>
+  <div class="box">
+    <div class="inner-box">
+      <p class="h1 font-weight-light">The Globe</p>
+      <div class="g-signin2" data-ux_mode="redirect" data-width="172.95" data-onfailure="onFailure" data-onsuccess="onSignIn"></div>
+    </div>
+  </div>
+  <script>
+    function onFailure() {
+      console.log('An Error accured during signing in')
+      window.location.pathname = '/error'
+    }
+    function onSignIn(googleUser) {
+      var id_token = googleUser.getAuthResponse().id_token;
+      var xhr = new window.XMLHttpRequest();
+      xhr.open('POST', '/auth_callback', false);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.onload = function() {
+        window.location.pathname = xhr.response;
+      };
+      xhr.send(JSON.stringify({
+        id_token: id_token
+      }));
+    }
+  </script>
+</body>
+</html>
