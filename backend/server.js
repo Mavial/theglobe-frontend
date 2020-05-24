@@ -31,16 +31,16 @@ if (process.env.PRODUCTION === 'true') {
   sess.cookie.maxAge = 2 * 24 * 60 * 60 * 1000; // days * hours * minutes * seconds * milliseconds
   sess.httpOnly = true;
   var reactBuild = 'build';
-  app.use(function (req, res, next) {
-    if (req.connection.encrypted) {
-      next()
-    } else {
-      if (req._parsedUrl.pathname === '/error') {
-        next()
-      }
-      res.render('error')
-    }
-  });
+  // app.use(function (req, res, next) {
+  //   if (req.connection.encrypted) {
+  //     next()
+  //   } else {
+  //     if (req._parsedUrl.pathname === '/error') {
+  //       next()
+  //     }
+  //     res.render('error')
+  //   }
+  // });
 } else if (process.env.SIMULATION === 'true') {
   var reactBuild = 'build';
 } else {};
