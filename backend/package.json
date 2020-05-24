@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A small backend for the TheGlobe frontend.",
   "dependencies": {
     "dotenv": "^8.2.0",
