@@ -13,7 +13,8 @@
   },
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js",
+    "test": "cd .. && npm run build && cd backend/ && npm start"
   },
   "author": "Marvin Willms",
   "license": "ISC"
