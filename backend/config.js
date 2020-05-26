@@ -9,7 +9,7 @@ if (process.env.PRODUCTION === 'true') {
 
 module.exports = {
   // The secret for the encryption for the session
-  SessionSecret: process.env.SESSION_SECRET,
+  JWT_sec: process.env.SESSION_SECRET,
   baseURL: baseURL,
   port: port,
   // The credentials and information for OAuth2
