@@ -1,6 +1,6 @@
 {
   "name": "backend",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A small backend for the TheGlobe frontend.",
   "dependencies": {
     "cookie-parser": "^1.4.5",
