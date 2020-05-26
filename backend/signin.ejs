@@ -2,6 +2,13 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <meta name="author" content="The Globe">
+  <meta name="publisher" content="The Globe">
+  <meta name="copyright" content="The Globe">
+  <meta name="description" content="The Globe Closed Demo.
+  The Globe provides a new way of ingesting the News, we take the News of major Sites RSS Feeds, and Display them on a Globe, giving you more context to each story.">
+  <meta name="keywords" content="Globe, News, Media, Geography, Location, Important, Breaking, News, Learning">
+  <meta name="robots" content="index, follow">
   <link rel="icon" href="/favicon.ico" />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
@@ -44,12 +51,41 @@
     .inner-box {
       margin-top: -53px;
     }
+    .links {
+      height: 24px;
+      position: fixed;
+      bottom: 10px;
+      left: 10px;
+    }
+    .links a {
+      margin-right: 0.5em;
+      margin-left: 0.5em;
+    }
+    .links a {
+      margin-right: 0.5em;
+      margin-left: 0.5em;
+    }
+    .links a:link{
+      color: white !important;
+    }
+    .links a:visited {
+      color: rgb(137, 184, 255) !important;
+    }
+    .links a:active {
+      color: rgb(137, 184, 255) !important;
+    }
+    .links a:hover {
+      color: #acacac !important;
+    }
   </style>
   <div class="box">
     <div class="inner-box">
       <p class="h1 font-weight-light">The Globe</p>
       <div class="g-signin2" data-ux_mode="redirect" data-width="172.95" data-onfailure="onFailure" data-onsuccess="onSignIn"></div>
     </div>
+  </div>
+  <div class="links">
+    <a href="https://globn.de/contact">Contact</a>|<a href="https://globn.de/privacy">Privacy</a>
   </div>
   <script>
     function onFailure() {
