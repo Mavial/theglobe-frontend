@@ -8,7 +8,8 @@ every Site it is used on.
 
 */
 
-const UserModel = require('./user')
+const UserModel = require('./user');
+const verify_token = require('./verify_token')
 
 module.exports = {
     requireAuthCheck: (req, res, next) => {
@@ -16,16 +17,26 @@ module.exports = {
         if(req._parsedUrl.pathname !== '/') {
             next();
         } else {
-            if (req.session.signed_in && req.session.user_id) {
-                UserModel.findOne({ user_id: req.session.user_id },  function (err, user) {
-                    if (err) {
-                      console.error(err)
-                      return res.send('/error');
+            if (req.cookies.jwt) {
+                try {
+                    var verified_jwt = verify_token.verify_jwt(req.cookies.jwt)
+                    if (verified_jwt && (verified_jwt.expires > Date.now())) {
+                        UserModel.findOne({ user_id: verified_jwt.user_id },  function (err, user) {
+                            if (err) {
+                              console.error(err)
+                              return res.redirect('/error');
+                            } else {
+                                // TODO -> check if the user has an access key
+                                next()
+                            }
+                        })
                     } else {
-                        // TODO -> check if the user has an access key
-                        next()
+                        return res.redirect('/signout')
                     }
-                })
+                } catch (error) {
+                    console.error(error)
+                    return res.redirect('/error');
+                }
             } else {
                 return res.redirect('/signin')
             }

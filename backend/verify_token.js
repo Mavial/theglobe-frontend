@@ -9,9 +9,10 @@ verify the id_token from Google's Api
 
 // Including our config file
 const CONFIG = require('./config');
+const jwt = require('jsonwebtoken');
 
 module.exports = {
-    verify_function : async (oauth2Client, id_token) => {
+    verify_google : async (oauth2Client, id_token) => {
         const ticket = await oauth2Client.verifyIdToken({
             idToken: id_token,
             audience: CONFIG.oauth2Credentials.client_id,  // Specify the CLIENT_ID of the app that accesses the backend
@@ -22,5 +23,17 @@ module.exports = {
         // If request specified a G Suite domain:
         // const domain = payload['hd'];
         return payload
+    },
+    verify_jwt : function VerifyJWT (user_jwt) {
+        var decoded_jwt;
+        jwt.verify(user_jwt, config.JWT_sec, function (err, decoded) {
+            if (err) {
+                console.error(err)
+                return false
+            } else {
+                decoded_jwt = decoded
+            }
+        })
+        return decoded_jwt
     }
 }
